@@ -10,4 +10,4 @@ RUN curl -o /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sger
 ENV LD_LIBRARY_PATH=/lib:/usr/lib
 COPY --from=docker/compose:1.23.2 /usr/local/bin/docker-compose /usr/local/bin/
 COPY --from=docker:18.09.4 /usr/local/bin/docker /usr/local/bin/
-COPY --from=moby/buildkit:v0.3.3 /usr/bin/buildctl /usr/local/bin/
+COPY --from=moby/buildkit:v0.4.0 /usr/bin/buildctl /usr/local/bin/
