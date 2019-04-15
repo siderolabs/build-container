@@ -1,0 +1,33 @@
+kind: pipeline
+name: default
+
+steps:
+- name: conform
+  image: autonomy/conform:c539351
+
+- name: build-dry-run
+  image: plugins/docker
+  settings:
+    repo: autonomy/build-containers
+    dry_run: true
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+  when:
+    event:
+    - pull_request
+
+- name: build-and-push
+  image: plugins/docker
+  settings:
+    repo: autonomy/build-containers
+    auto_tag: true
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+  when:
+    event:
+      exclude:
+      - pull_request
