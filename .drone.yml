@@ -8,7 +8,7 @@ steps:
 - name: build-dry-run
   image: plugins/docker
   settings:
-    repo: autonomy/build-containers
+    repo: autonomy/build-container
     dry_run: true
     username:
       from_secret: docker_username
@@ -21,7 +21,7 @@ steps:
 - name: build-and-push
   image: plugins/docker
   settings:
-    repo: autonomy/build-containers
+    repo: autonomy/build-container
     auto_tag: true
     username:
       from_secret: docker_username
