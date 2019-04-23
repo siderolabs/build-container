@@ -10,10 +10,6 @@ steps:
   settings:
     repo: autonomy/build-container
     dry_run: true
-    username:
-      from_secret: docker_username
-    password:
-      from_secret: docker_password
   when:
     event:
     - pull_request
