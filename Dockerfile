@@ -1,6 +1,6 @@
 FROM alpine:3.9
-
-RUN apk add --update --no-cache make musl-dev bash curl git jq
+RUN sed -i -e 's/dl-cdn.alpinelinux.org/ewr.edge.kernel.org/g' /etc/apk/repositories \
+    && apk add --update --no-cache make musl-dev bash curl git jq
 
 RUN curl --create-dirs -Lo /root/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/v0.2.2/buildx-v0.2.2.linux-amd64 \
     && chmod 755 /root/.docker/cli-plugins/docker-buildx
@@ -19,3 +19,4 @@ ENV LD_LIBRARY_PATH=/lib:/usr/lib
 COPY --from=docker/compose:1.24.0 /usr/local/bin/docker-compose /usr/local/bin/
 COPY --from=docker:19.03-rc /usr/local/bin/docker /usr/local/bin/dockerd /usr/local/bin/
 COPY --from=moby/buildkit:v0.5.0 /usr/bin/buildctl /usr/local/bin/
+COPY --from=autonomy/bldr:95bb0e7-scratch /bldr /usr/local/bin/
