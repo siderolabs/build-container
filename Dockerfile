@@ -19,4 +19,4 @@ ENV LD_LIBRARY_PATH=/lib:/usr/lib
 COPY --from=docker/compose:1.24.0 /usr/local/bin/docker-compose /usr/local/bin/
 COPY --from=docker:19.03-rc /usr/local/bin/docker /usr/local/bin/dockerd /usr/local/bin/
 COPY --from=moby/buildkit:v0.5.0 /usr/bin/buildctl /usr/local/bin/
-COPY --from=autonomy/bldr:95bb0e7-scratch /bldr /usr/local/bin/
+COPY --from=autonomy/bldr:f5305ac-scratch /bldr /usr/local/bin/
