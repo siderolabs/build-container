@@ -6,28 +6,32 @@ platform:
   arch: amd64
 
 steps:
-- name: conform
-  image: autonomy/conform:c539351
+  - name: conform
+    image: autonomy/conform:c539351
 
-- name: build-dry-run
-  image: plugins/docker
-  settings:
-    repo: autonomy/build-container
-    dry_run: true
-  when:
-    event:
-    - pull_request
+  - name: build-dry-run
+    image: plugins/docker
+    environment:
+      PLUGIN_MTU: '1440'
+    settings:
+      repo: autonomy/build-container
+      dry_run: true
+    when:
+      event:
+        - pull_request
 
-- name: build-and-push
-  image: plugins/docker
-  settings:
-    repo: autonomy/build-container
-    auto_tag: true
-    username:
-      from_secret: docker_username
-    password:
-      from_secret: docker_password
-  when:
-    event:
-      exclude:
-      - pull_request
+  - name: build-and-push
+    image: plugins/docker
+    environment:
+      PLUGIN_MTU: '1440'
+    settings:
+      repo: autonomy/build-container
+      auto_tag: true
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+    when:
+      event:
+        exclude:
+          - pull_request
