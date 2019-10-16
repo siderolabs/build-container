@@ -1,12 +1,10 @@
 ARG DOCKER_COMPOSE=docker/compose:1.24.1
 ARG DOCKER=docker:19.03.1
 ARG BUILDKIT=moby/buildkit:v0.6.1
-ARG BLDR=autonomy/bldr:946e61b-scratch
 
 FROM $DOCKER_COMPOSE as docker_compose
 FROM $DOCKER as docker
 FROM $BUILDKIT as buildkit
-FROM $BLDR as bldr
 
 FROM alpine:3.9
 
@@ -63,4 +61,3 @@ ENV LD_LIBRARY_PATH=/lib:/usr/lib
 COPY --from=docker_compose /usr/local/bin/docker-compose /usr/local/bin/
 COPY --from=docker /usr/local/bin/docker /usr/local/bin/dockerd /usr/local/bin/
 COPY --from=buildkit /usr/bin/buildctl /usr/local/bin/
-COPY --from=bldr /bldr /usr/local/bin/
