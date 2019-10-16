@@ -11,7 +11,7 @@ FROM $BLDR as bldr
 FROM alpine:3.9
 
 ENV BUILDX_VERSION=v0.3.0
-ENV GITMETA_VERSION=v0.1.0-alpha.2
+ENV GITMETA_VERSION=v0.1.0-alpha.3
 ENV CLOUD_SDK_VERSION=258.0.0
 
 # janky janky janky
