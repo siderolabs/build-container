@@ -5,14 +5,43 @@ platform:
   os: linux
   arch: amd64
 
+services:
+  - name: docker
+    image: docker:19.03.3-dind
+    entrypoint:
+      - dockerd
+    command:
+      - --dns=8.8.8.8
+      - --dns=8.8.4.4
+      - --mtu=1440
+      - --log-level=error
+    privileged: true
+    volumes:
+      - name: docker-socket
+        path: /var/run
+
 steps:
   - name: conform
     image: autonomy/conform:c539351
 
+  # This step is temporary until a new version of buildx is released with
+  # support for the Kubernetes driver.
+  - name: buildx
+    image: docker:19.03.3
+    commands:
+      - apk add bash git make
+      - git clone https://github.com/docker/buildx.git
+      - cd buildx
+      - git checkout 709ef36b4f10a9389fd9a806657c48a969909d85
+      - make binaries
+    volumes:
+      - name: docker-socket
+        path: /var/run
+
   - name: build-dry-run
     image: plugins/docker
     environment:
-      PLUGIN_MTU: '1440'
+      PLUGIN_MTU: "1440"
     settings:
       repo: autonomy/build-container
       dry_run: true
@@ -23,7 +52,7 @@ steps:
   - name: build-and-push
     image: plugins/docker
     environment:
-      PLUGIN_MTU: '1440'
+      PLUGIN_MTU: "1440"
     settings:
       repo: autonomy/build-container
       auto_tag: true
@@ -35,3 +64,7 @@ steps:
       event:
         exclude:
           - pull_request
+
+volumes:
+  - name: docker-socket
+    temp: {}
