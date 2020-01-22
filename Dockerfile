@@ -47,7 +47,9 @@ RUN apk add --update --no-cache \
   py-crcmod \
   py-pip \
   python2 \
-  python2-dev
+  python2-dev \
+  iptables \
+  ip6tables
 
 # Install docker buildx
 ADD buildx/bin/buildx /root/.docker/cli-plugins/docker-buildx
