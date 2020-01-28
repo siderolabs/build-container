@@ -26,7 +26,7 @@ FROM alpine:3.9
 ENV BUILDX_VERSION=v0.3.0
 ENV GITMETA_VERSION=v0.1.0-alpha.3
 ENV CLOUD_SDK_VERSION=258.0.0
-ENV CNI_PLUGINS_VERSION=v0.8.4
+ENV CNI_PLUGINS_VERSION=v0.8.5
 
 # janky janky janky
 ENV PATH /google-cloud-sdk/bin:$PATH
@@ -75,7 +75,7 @@ RUN pip install azure-cli
 
 # Install CNI
 RUN mkdir -p /opt/cni/bin /etc/cni/conf.d /var/lib/cni
-RUN curl -LO https://github.com/containernetworking/plugins/releases/download/v0.8.4/cni-plugins-linux-amd64-${CNI_PLUGINS_VERSION}.tgz && \
+RUN curl -LO https://github.com/containernetworking/plugins/releases/download/${CNI_PLUGINS_VERSION}/cni-plugins-linux-amd64-${CNI_PLUGINS_VERSION}.tgz && \
   tar xzf cni-plugins-linux-amd64-${CNI_PLUGINS_VERSION}.tgz  -C /opt/cni/bin && \
   rm cni-plugins-linux-amd64-${CNI_PLUGINS_VERSION}.tgz
 
