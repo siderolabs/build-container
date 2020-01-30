@@ -37,7 +37,7 @@ steps:
       - cd ..
       - git clone https://github.com/firecracker-microvm/firecracker.git
       - cd firecracker
-      - git checkout ebc15f2eacaa4c26782a05f8e0cebe4c47512553
+      - git checkout 7ecb2321fb3086f4b615dc8cd84a06efacee2c2f
       - tools/devtool -y build
     volumes:
       - name: docker-socket
