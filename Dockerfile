@@ -49,7 +49,8 @@ RUN apk add --update --no-cache \
   python2 \
   python2-dev \
   iptables \
-  ip6tables
+  ip6tables \
+  xz
 
 # Install docker buildx
 ADD buildx/bin/buildx /root/.docker/cli-plugins/docker-buildx
