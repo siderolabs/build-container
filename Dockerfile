@@ -27,6 +27,7 @@ ENV BUILDX_VERSION=v0.3.0
 ENV GITMETA_VERSION=v0.1.0-alpha.3
 ENV CLOUD_SDK_VERSION=258.0.0
 ENV CNI_PLUGINS_VERSION=v0.8.5
+ENV FIRECRACKER_VERSION=v0.21.0
 
 # janky janky janky
 ENV PATH /google-cloud-sdk/bin:$PATH
@@ -81,7 +82,8 @@ RUN curl -LO https://github.com/containernetworking/plugins/releases/download/${
   rm cni-plugins-linux-amd64-${CNI_PLUGINS_VERSION}.tgz
 
 # Install firecracker
-ADD firecracker/build/cargo_target/x86_64-unknown-linux-musl/debug/firecracker /usr/bin/firecracker
+RUN curl -Lo /usr/local/bin/firecracker https://github.com/firecracker-microvm/firecracker/releases/download/${FIRECRACKER_VERSION}/firecracker-${FIRECRACKER_VERSION}-x86_64 \
+  && chmod 755 /usr/local/bin/firecracker
 
 # Required by docker-compose for zlib.
 ENV LD_LIBRARY_PATH=/lib:/usr/lib
