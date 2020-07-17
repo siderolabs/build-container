@@ -1,0 +1,6 @@
+#!/bin/sh
+
+set -eou pipefail
+
+docker buildx create --driver docker-container --platform linux/amd64 --name xbuild --config hack/buildkit.conf --use
+docker buildx create --append --name xbuild ssh://139.178.90.2 --platform linux/arm64

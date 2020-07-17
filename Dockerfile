@@ -88,6 +88,9 @@ RUN curl -Lo /usr/local/bin/firecracker https://github.com/firecracker-microvm/f
 # Required by docker-compose for zlib.
 ENV LD_LIBRARY_PATH=/lib:/usr/lib
 
+# Install custom scripts
+ADD hack/scripts/ /usr/local/bin
+
 COPY --from=docker_compose /usr/local/bin/docker-compose /usr/local/bin/
 COPY --from=docker /usr/local/bin/docker /usr/local/bin/dockerd /usr/local/bin/
 COPY --from=buildkit /usr/bin/buildctl /usr/local/bin/
