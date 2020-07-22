@@ -7,7 +7,7 @@ platform:
 
 services:
   - name: docker
-    image: docker:19.03.3-dind
+    image: docker:19.03.12-dind
     entrypoint:
       - dockerd
     command:
@@ -23,20 +23,6 @@ services:
 steps:
   - name: conform
     image: autonomy/conform:c539351
-
-  # This step is temporary until a new version of buildx is released with
-  # support for the Kubernetes driver.
-  - name: buildx
-    image: docker:19.03.3
-    commands:
-      - apk add bash git make
-      - git clone https://github.com/docker/buildx.git
-      - cd buildx
-      - git checkout 709ef36b4f10a9389fd9a806657c48a969909d85
-      - make binaries
-    volumes:
-      - name: docker-socket
-        path: /var/run
 
   - name: build-dry-run
     image: plugins/docker
