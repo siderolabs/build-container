@@ -1,15 +1,13 @@
-ARG DOCKER_COMPOSE=docker/compose:1.24.1
-ARG DOCKER=docker:19.03.1
-ARG BUILDKIT=moby/buildkit:v0.6.1
-ARG GOLANG=golang:1.13.6-alpine
+ARG DOCKER=docker:19.03.12
+ARG BUILDKIT=moby/buildkit:v0.7.1
+ARG GOLANG=golang:1.14-alpine
 
-FROM $DOCKER_COMPOSE as docker_compose
 FROM $DOCKER as docker
 FROM $BUILDKIT as buildkit
 
 FROM $GOLANG as tc-redirect-tap
 
-ENV FIRECRACKER_SDK_VERSION=v0.19.0
+ARG FIRECRACKER_SDK_VERSION=v0.19.0
 
 WORKDIR /src
 
@@ -17,17 +15,17 @@ RUN apk add --update --no-cache \
   curl \
   make
 
+# TODO: switch to awslabs/tc-redirect-tap once it has a release
 RUN curl -LO https://github.com/firecracker-microvm/firecracker-go-sdk/archive/${FIRECRACKER_SDK_VERSION}.tar.gz
 RUN tar xzf ${FIRECRACKER_SDK_VERSION}.tar.gz --strip-components=1
 RUN make -C cni install
 
-FROM alpine:3.9
+FROM alpine:3.11
 
-ENV BUILDX_VERSION=v0.3.0
-ENV GITMETA_VERSION=v0.1.0-alpha.3
-ENV CLOUD_SDK_VERSION=258.0.0
-ENV CNI_PLUGINS_VERSION=v0.8.5
-ENV FIRECRACKER_VERSION=v0.21.0
+ARG CLOUD_SDK_VERSION=258.0.0
+ARG CNI_PLUGINS_VERSION=v0.8.5
+ARG FIRECRACKER_VERSION=v0.21.0
+ARG BUILDX=v0.4.1
 
 # janky janky janky
 ENV PATH /google-cloud-sdk/bin:$PATH
@@ -52,14 +50,6 @@ RUN apk add --update --no-cache \
   iptables \
   ip6tables \
   xz
-
-# Install docker buildx
-ADD buildx/bin/buildx /root/.docker/cli-plugins/docker-buildx
-RUN chmod 755 /root/.docker/cli-plugins/docker-buildx
-
-# Install gitmeta
-RUN curl --create-dirs -Lo /usr/local/bin/gitmeta https://github.com/talos-systems/gitmeta/releases/download/${GITMETA_VERSION}/gitmeta-linux-amd64 \
-  && chmod 755 /usr/local/bin/gitmeta
 
 # Install gcloud
 RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz && \
@@ -88,10 +78,13 @@ RUN curl -Lo /usr/local/bin/firecracker https://github.com/firecracker-microvm/f
 # Required by docker-compose for zlib.
 ENV LD_LIBRARY_PATH=/lib:/usr/lib
 
+# Install buildx
+RUN curl --create-dirs -Lo /root/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/${BUILDX}/buildx-${BUILDX}.linux-amd64 \
+  && chmod 755 /root/.docker/cli-plugins/docker-buildx
+
 # Install custom scripts
 ADD hack/scripts/ /usr/local/bin
 
-COPY --from=docker_compose /usr/local/bin/docker-compose /usr/local/bin/
 COPY --from=docker /usr/local/bin/docker /usr/local/bin/dockerd /usr/local/bin/
 COPY --from=buildkit /usr/bin/buildctl /usr/local/bin/
 COPY --from=tc-redirect-tap /opt/cni/bin/tc-redirect-tap /opt/cni/bin/
