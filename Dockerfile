@@ -75,6 +75,9 @@ RUN curl -LO https://github.com/containernetworking/plugins/releases/download/${
 RUN curl -Lo /usr/local/bin/firecracker https://github.com/firecracker-microvm/firecracker/releases/download/${FIRECRACKER_VERSION}/firecracker-${FIRECRACKER_VERSION}-x86_64 \
   && chmod 755 /usr/local/bin/firecracker
 
+# Install QEMU
+RUN apk add qemu-img qemu-system-x86_64
+
 # Required by docker-compose for zlib.
 ENV LD_LIBRARY_PATH=/lib:/usr/lib
 
