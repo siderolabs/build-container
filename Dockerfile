@@ -8,6 +8,7 @@ FROM $BUILDKIT as buildkit
 FROM $GOLANG as tc-redirect-tap
 
 ARG FIRECRACKER_SDK_VERSION=v0.19.0
+ARG GIT_CHGLOG_VERSION=0.9.1
 
 WORKDIR /src
 
@@ -19,6 +20,9 @@ RUN apk add --update --no-cache \
 RUN curl -LO https://github.com/firecracker-microvm/firecracker-go-sdk/archive/${FIRECRACKER_SDK_VERSION}.tar.gz
 RUN tar xzf ${FIRECRACKER_SDK_VERSION}.tar.gz --strip-components=1
 RUN make -C cni install
+
+RUN curl -Lo /usr/local/bin/git-chglog https://github.com/git-chglog/git-chglog/releases/download/${GIT_CHGLOG_VERSION}/git-chglog_linux_amd64
+RUN chmod +x /usr/local/bin/git-chglog
 
 FROM alpine:3.11
 
