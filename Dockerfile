@@ -21,9 +21,6 @@ RUN curl -LO https://github.com/firecracker-microvm/firecracker-go-sdk/archive/$
 RUN tar xzf ${FIRECRACKER_SDK_VERSION}.tar.gz --strip-components=1
 RUN make -C cni install
 
-RUN curl -Lo /usr/local/bin/git-chglog https://github.com/git-chglog/git-chglog/releases/download/${GIT_CHGLOG_VERSION}/git-chglog_linux_amd64
-RUN chmod +x /usr/local/bin/git-chglog
-
 FROM alpine:3.11
 
 ARG CLOUD_SDK_VERSION=258.0.0
@@ -91,6 +88,9 @@ RUN curl --create-dirs -Lo /root/.docker/cli-plugins/docker-buildx https://githu
 
 # Install custom scripts
 ADD hack/scripts/ /usr/local/bin
+
+RUN curl -Lo /usr/local/bin/git-chglog https://github.com/git-chglog/git-chglog/releases/download/${GIT_CHGLOG_VERSION}/git-chglog_linux_amd64
+RUN chmod +x /usr/local/bin/git-chglog
 
 COPY --from=docker /usr/local/bin/docker /usr/local/bin/dockerd /usr/local/bin/
 COPY --from=buildkit /usr/bin/buildctl /usr/local/bin/
