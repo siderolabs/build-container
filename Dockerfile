@@ -22,7 +22,7 @@ RUN make -C cni install
 
 FROM alpine:3.11
 
-ARG CLOUD_SDK_VERSION=258.0.0
+ARG CLOUD_SDK_VERSION=304.0.0
 ARG CNI_PLUGINS_VERSION=v0.8.5
 ARG FIRECRACKER_VERSION=v0.21.0
 ARG BUILDX=v0.4.1
@@ -44,10 +44,10 @@ RUN apk add --update --no-cache \
   musl-dev \
   openssh-client \
   openssl-dev \
-  py-crcmod \
-  py-pip \
-  python2 \
-  python2-dev \
+  py3-crcmod \
+  py3-pip \
+  python3 \
+  python3-dev \
   iptables \
   ip6tables \
   xz
@@ -61,10 +61,10 @@ RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cl
   gcloud config set metrics/environment github_docker_image
 
 # Install aws
-RUN pip install awscli s3cmd
+RUN pip3 install awscli s3cmd
 
 # Install azure
-RUN pip install azure-cli
+RUN pip3 install azure-cli
 
 # Install CNI
 RUN mkdir -p /opt/cni/bin /etc/cni/conf.d /var/lib/cni
