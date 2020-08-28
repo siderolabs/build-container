@@ -37,6 +37,8 @@ RUN apk add --update --no-cache \
   gcc \
   git \
   gnupg \
+  iptables \
+  ip6tables \
   jq \
   libc6-compat \
   libffi-dev \
@@ -44,12 +46,14 @@ RUN apk add --update --no-cache \
   musl-dev \
   openssh-client \
   openssl-dev \
+  ovmf \
   py3-crcmod \
   py3-pip \
   python3 \
   python3-dev \
-  iptables \
-  ip6tables \
+  qemu-img \
+  qemu-system-aarch64 \
+  qemu-system-x86_64 \
   xz
 
 # Install gcloud
@@ -75,9 +79,6 @@ RUN curl -LO https://github.com/containernetworking/plugins/releases/download/${
 # Install firecracker
 RUN curl -Lo /usr/local/bin/firecracker https://github.com/firecracker-microvm/firecracker/releases/download/${FIRECRACKER_VERSION}/firecracker-${FIRECRACKER_VERSION}-x86_64 \
   && chmod 755 /usr/local/bin/firecracker
-
-# Install QEMU
-RUN apk add qemu-img qemu-system-x86_64
 
 # Required by docker-compose for zlib.
 ENV LD_LIBRARY_PATH=/lib:/usr/lib
