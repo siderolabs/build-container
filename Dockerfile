@@ -88,7 +88,8 @@ RUN curl --create-dirs -Lo /root/.docker/cli-plugins/docker-buildx https://githu
   && chmod 755 /root/.docker/cli-plugins/docker-buildx
 
 # Install custom scripts
-ADD hack/scripts/ /usr/local/bin
+ADD hack/scripts/ /usr/local/bin/
+ADD hack/buildkit.conf /usr/local/etc/
 
 RUN curl -Lo /usr/local/bin/git-chglog https://github.com/git-chglog/git-chglog/releases/download/${GIT_CHGLOG_VERSION}/git-chglog_linux_amd64
 RUN chmod +x /usr/local/bin/git-chglog
