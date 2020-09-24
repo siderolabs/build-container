@@ -3,4 +3,4 @@
 set -eou pipefail
 
 docker buildx create --driver docker-container --platform linux/amd64 --name xbuild --use
-docker buildx create --append --name xbuild ssh://139.178.90.2 --platform linux/arm64
+docker buildx create --append --name xbuild --platform linux/arm64 tcp://docker-arm64.ci.svc:2376
