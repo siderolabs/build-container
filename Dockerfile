@@ -1,4 +1,4 @@
-ARG DOCKER=docker:19.03.12
+ARG DOCKER=docker:19.03.13
 ARG BUILDKIT=moby/buildkit:v0.7.1
 ARG GOLANG=golang:1.14-alpine
 
