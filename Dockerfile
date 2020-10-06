@@ -51,6 +51,7 @@ RUN apk add --update --no-cache \
   py3-pip \
   python3 \
   python3-dev \
+  tar \
   qemu-img \
   qemu-system-aarch64 \
   qemu-system-x86_64 \
