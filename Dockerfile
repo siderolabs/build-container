@@ -98,3 +98,5 @@ RUN chmod +x /usr/local/bin/git-chglog
 COPY --from=docker /usr/local/bin/docker /usr/local/bin/dockerd /usr/local/bin/
 COPY --from=buildkit /usr/bin/buildctl /usr/local/bin/
 COPY --from=tc-redirect-tap /opt/cni/bin/tc-redirect-tap /opt/cni/bin/
+
+RUN apk add --no-cache coreutils
