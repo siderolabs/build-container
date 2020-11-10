@@ -1,20 +1,18 @@
 #!/bin/sh
 
-set -e
+set -ex
 
 export TAG=$(git log --oneline --format=%B -n 1 HEAD | head -n 1 | sed -r "s/^release\((.*)\):.*$/\\1/")
 
 function setup_buildkit() {
-  local COMMON_ARGS="--name ci --buildkitd-flags '--allow-insecure-entitlement security.insecure' --driver-opt image=moby/buildkit:master"
-
   docker buildx create \
-    $COMMON_ARGS \
+    --name ci --buildkitd-flags "--allow-insecure-entitlement security.insecure" --driver-opt image=moby/buildkit:master \
     --platform linux/amd64 \
     --driver docker-container  \
     --use unix:///var/outer-run/docker.sock
 
   docker buildx create \
-    $COMMON_ARGS \
+    --name ci --buildkitd-flags "--allow-insecure-entitlement security.insecure" --driver-opt image=moby/buildkit:master \
     --platform linux/arm64 \
     --append \
     tcp://docker-arm64.ci.svc:2376
