@@ -24,8 +24,13 @@ function setup_buildkit() {
 function setup_tags() {
   git fetch --tags
 
+  if [ $(git tag -l "$TAG") ]; then
+    echo "Tag exists: $TAG"
+    return
+  fi
+
   if [ -n $TAG ]; then
-    echo "Creating temporary tag $TAG"
+    echo "Creating temporary tag: $TAG"
     git tag -a $TAG -m "$TAG"
   fi
 }
