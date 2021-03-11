@@ -1,31 +1,12 @@
 ARG DOCKER=docker:19.03.13
-ARG BUILDKIT=moby/buildkit:v0.7.1
 ARG GOLANG=golang:1.14-alpine
 
 FROM $DOCKER as docker
-FROM $BUILDKIT as buildkit
 
-FROM $GOLANG as tc-redirect-tap
-
-ARG FIRECRACKER_SDK_VERSION=v0.19.0
-
-WORKDIR /src
-
-RUN apk add --update --no-cache \
-  curl \
-  make
-
-# TODO: switch to awslabs/tc-redirect-tap once it has a release
-RUN curl -LO https://github.com/firecracker-microvm/firecracker-go-sdk/archive/${FIRECRACKER_SDK_VERSION}.tar.gz
-RUN tar xzf ${FIRECRACKER_SDK_VERSION}.tar.gz --strip-components=1
-RUN make -C cni install
-
-FROM alpine:3.11
+FROM alpine:3.13
 
 ARG CLOUD_SDK_VERSION=304.0.0
-ARG CNI_PLUGINS_VERSION=v0.8.5
-ARG FIRECRACKER_VERSION=v0.21.0
-ARG BUILDX=v0.4.2
+ARG BUILDX=v0.5.1
 ARG GIT_CHGLOG_VERSION=0.9.1
 
 # janky janky janky
@@ -33,9 +14,11 @@ ENV PATH /google-cloud-sdk/bin:$PATH
 
 RUN apk add --update --no-cache \
   bash \
+  coreutils \
   curl \
   gcc \
   git \
+  git-lfs \
   gnupg \
   iptables \
   ip6tables \
@@ -51,6 +34,7 @@ RUN apk add --update --no-cache \
   py3-pip \
   python3 \
   python3-dev \
+  rust \
   tar \
   qemu-img \
   qemu-system-aarch64 \
@@ -71,16 +55,6 @@ RUN pip3 install awscli s3cmd
 # Install azure
 RUN pip3 install azure-cli
 
-# Install CNI
-RUN mkdir -p /opt/cni/bin /etc/cni/conf.d /var/lib/cni
-RUN curl -LO https://github.com/containernetworking/plugins/releases/download/${CNI_PLUGINS_VERSION}/cni-plugins-linux-amd64-${CNI_PLUGINS_VERSION}.tgz && \
-  tar xzf cni-plugins-linux-amd64-${CNI_PLUGINS_VERSION}.tgz  -C /opt/cni/bin && \
-  rm cni-plugins-linux-amd64-${CNI_PLUGINS_VERSION}.tgz
-
-# Install firecracker
-RUN curl -Lo /usr/local/bin/firecracker https://github.com/firecracker-microvm/firecracker/releases/download/${FIRECRACKER_VERSION}/firecracker-${FIRECRACKER_VERSION}-x86_64 \
-  && chmod 755 /usr/local/bin/firecracker
-
 # Required by docker-compose for zlib.
 ENV LD_LIBRARY_PATH=/lib:/usr/lib
 
@@ -90,13 +64,8 @@ RUN curl --create-dirs -Lo /root/.docker/cli-plugins/docker-buildx https://githu
 
 # Install custom scripts
 ADD hack/scripts/ /usr/local/bin/
-ADD hack/buildkit.conf /usr/local/etc/
 
 RUN curl -Lo /usr/local/bin/git-chglog https://github.com/git-chglog/git-chglog/releases/download/${GIT_CHGLOG_VERSION}/git-chglog_linux_amd64
 RUN chmod +x /usr/local/bin/git-chglog
 
 COPY --from=docker /usr/local/bin/docker /usr/local/bin/dockerd /usr/local/bin/
-COPY --from=buildkit /usr/bin/buildctl /usr/local/bin/
-COPY --from=tc-redirect-tap /opt/cni/bin/tc-redirect-tap /opt/cni/bin/
-
-RUN apk add --no-cache coreutils
