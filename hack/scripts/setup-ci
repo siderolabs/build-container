@@ -2,7 +2,7 @@
 
 set -ex
 
-export TAG=$(git log --oneline --format=%B -n 1 HEAD | head -n 1 | sed -r "s/^release\((.*)\):.*$/\\1/")
+export TAG=$(git log --oneline --format=%B -n 1 HEAD | head -n 1 | sed -r "/^release\(/ s/^release\((.*)\):.*$/\\1/; t; Q")
 
 function setup_buildkit() {
   docker buildx create \
@@ -29,7 +29,7 @@ function setup_tags() {
     return
   fi
 
-  if [ -n $TAG ]; then
+  if [ -n "$TAG" ]; then
     echo "Creating temporary tag: $TAG"
     git tag -a $TAG -m "$TAG"
   fi
