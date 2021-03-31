@@ -35,6 +35,7 @@ RUN apk add --update --no-cache \
   python3 \
   python3-dev \
   rust \
+  sed \
   tar \
   qemu-img \
   qemu-system-aarch64 \
