@@ -6,13 +6,13 @@ export TAG=$(git log --oneline --format=%B -n 1 HEAD | head -n 1 | sed -r "/^rel
 
 function setup_buildkit() {
   docker buildx create \
-    --name ci --buildkitd-flags "--allow-insecure-entitlement security.insecure" --driver-opt image=moby/buildkit:master \
+    --name ci --buildkitd-flags "--allow-insecure-entitlement security.insecure" --driver-opt image=moby/buildkit:buildx-stable-1 \
     --platform linux/amd64 \
     --driver docker-container  \
     --use unix:///var/outer-run/docker.sock
 
   docker buildx create \
-    --name ci --buildkitd-flags "--allow-insecure-entitlement security.insecure" --driver-opt image=moby/buildkit:master \
+    --name ci --buildkitd-flags "--allow-insecure-entitlement security.insecure" --driver-opt image=moby/buildkit:buildx-stable-1 \
     --platform linux/arm64 \
     --append \
     tcp://docker-arm64.ci.svc:2376
