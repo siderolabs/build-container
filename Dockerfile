@@ -1,17 +1,18 @@
-ARG DOCKER=docker:19.03.13
+ARG DOCKER=docker:20.10.8
 
 FROM $DOCKER as docker
 
-FROM alpine:3.13
+FROM alpine:3.14
 
-ARG CLOUD_SDK_VERSION=304.0.0
-ARG BUILDX=v0.5.1
+ARG CLOUD_SDK_VERSION=353.0.0
+ARG BUILDX=v0.6.1
 ARG GIT_CHGLOG_VERSION=0.9.1
 
 # janky janky janky
 ENV PATH /google-cloud-sdk/bin:$PATH
 
 RUN apk add --update --no-cache \
+  aws-cli \
   bash \
   coreutils \
   curl \
@@ -50,8 +51,8 @@ RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cl
   gcloud config set component_manager/disable_update_check true && \
   gcloud config set metrics/environment github_docker_image
 
-# Install aws
-RUN pip3 install awscli s3cmd
+# Install aws (TODO: alpine 3.15 should have s3cmd as a package)
+RUN pip3 install s3cmd
 
 # Install azure
 RUN pip3 install azure-cli
