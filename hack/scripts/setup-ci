@@ -61,5 +61,4 @@ case "${BUILDKIT_FLAVOR:-default}" in
     ;;
 esac
 
-setup_buildkit
 setup_tags
