@@ -5,7 +5,7 @@ FROM $DOCKER as docker
 FROM alpine:3.14
 
 ARG CLOUD_SDK_VERSION=353.0.0
-ARG BUILDX=v0.6.1
+ARG BUILDX=v0.6.3
 ARG GIT_CHGLOG_VERSION=0.9.1
 
 # janky janky janky

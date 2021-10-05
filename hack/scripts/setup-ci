@@ -4,18 +4,33 @@ set -ex
 
 export TAG=$(git log --oneline --format=%B -n 1 HEAD | head -n 1 | sed -r "/^release\(/ s/^release\((.*)\):.*$/\\1/; t; Q")
 
+# temp override, see https://github.com/moby/buildkit/pull/2394
+BUILDKIT_IMAGE="ghcr.io/smira/buildkit:cap-fix"
+
+# setup buildkit across amd64/arm64 workers
 function setup_buildkit() {
   docker buildx create \
-    --name ci --buildkitd-flags "--allow-insecure-entitlement security.insecure" --driver-opt image=moby/buildkit:buildx-stable-1 \
+    --name ci --buildkitd-flags "--allow-insecure-entitlement security.insecure" --driver-opt image=${BUILDKIT_IMAGE} \
     --platform linux/amd64 \
     --driver docker-container  \
     --use unix:///var/outer-run/docker.sock
 
   docker buildx create \
-    --name ci --buildkitd-flags "--allow-insecure-entitlement security.insecure" --driver-opt image=moby/buildkit:buildx-stable-1 \
+    --name ci --buildkitd-flags "--allow-insecure-entitlement security.insecure" --driver-opt image=${BUILDKIT_IMAGE} \
     --platform linux/arm64 \
     --append \
     tcp://docker-arm64.ci.svc:2376
+
+  docker buildx inspect --bootstrap
+}
+
+# setup buildkit on amd64 builder only with QEMU emulation for arm64
+function setup_buildkit_cross() {
+  docker buildx create \
+    --name ci --buildkitd-flags "--allow-insecure-entitlement security.insecure" --driver-opt image=${BUILDKIT_IMAGE} \
+    --platform linux/amd64,linux/arm64 \
+    --driver docker-container  \
+    --use unix:///var/outer-run/docker.sock
 
   docker buildx inspect --bootstrap
 }
@@ -36,5 +51,15 @@ function setup_tags() {
 }
 
 sleep 5
+
+case "${BUILDKIT_FLAVOR:-default}" in
+  cross)
+    setup_buildkit_cross
+    ;;
+  *)
+    setup_buildkit
+    ;;
+esac
+
 setup_buildkit
 setup_tags
