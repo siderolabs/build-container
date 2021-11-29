@@ -2,7 +2,7 @@ ARG DOCKER=docker:20.10.8
 
 FROM $DOCKER as docker
 
-FROM alpine:3.14
+FROM alpine:3.15.0
 
 ARG CLOUD_SDK_VERSION=353.0.0
 ARG BUILDX=v0.6.3
