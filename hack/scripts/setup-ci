@@ -4,8 +4,7 @@ set -ex
 
 export TAG=$(git log --oneline --format=%B -n 1 HEAD | head -n 1 | sed -r "/^release\(/ s/^release\((.*)\):.*$/\\1/; t; Q")
 
-# temp override, see https://github.com/moby/buildkit/pull/2394
-BUILDKIT_IMAGE="ghcr.io/smira/buildkit:cap-fix"
+BUILDKIT_IMAGE="docker.io/moby/buildkit:v0.10.0"
 
 # setup buildkit across amd64/arm64 workers
 function setup_buildkit() {

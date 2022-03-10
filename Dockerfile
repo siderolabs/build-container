@@ -2,7 +2,7 @@ ARG DOCKER=docker:20.10.8
 
 FROM $DOCKER as docker
 
-FROM alpine:3.14
+FROM alpine:3.15
 
 ARG CLOUD_SDK_VERSION=353.0.0
 ARG BUILDX=v0.6.3
@@ -14,6 +14,7 @@ ENV PATH /google-cloud-sdk/bin:$PATH
 RUN apk add --update --no-cache \
   aws-cli \
   bash \
+  cargo \
   coreutils \
   curl \
   gcc \
