@@ -1,11 +1,13 @@
-ARG DOCKER=docker:20.10.8
+ARG DOCKER=docker:20.10.17
 
 FROM $DOCKER as docker
 
+# TODO: holding this to 3.15, as Google Cloud SDK is not compatible with Python 3.10
+#       https://issuetracker.google.com/issues/205005959?pli=1
 FROM alpine:3.15
 
 ARG CLOUD_SDK_VERSION=353.0.0
-ARG BUILDX=v0.6.3
+ARG BUILDX=v0.8.2
 ARG GIT_CHGLOG_VERSION=0.9.1
 
 # janky janky janky
@@ -41,6 +43,7 @@ RUN apk add --update --no-cache \
   qemu-system-x86_64 \
   rust \
   sed \
+  socat \
   tar \
   xz
 
