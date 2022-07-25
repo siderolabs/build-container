@@ -4,7 +4,7 @@ FROM $DOCKER as docker
 
 # TODO: holding this to 3.15, as Google Cloud SDK is not compatible with Python 3.10
 #       https://issuetracker.google.com/issues/205005959?pli=1
-FROM alpine:3.15
+FROM alpine:3.16.1
 
 ARG CLOUD_SDK_VERSION=353.0.0
 ARG BUILDX=v0.8.2
