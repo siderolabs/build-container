@@ -1,0 +1,44 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+        ":dependencyDashboard",
+        ":gitSignOff",
+        ":semanticCommitScopeDisabled",
+        "schedule:earlyMondays"
+    ],
+    "prHeader": "Update Request | Renovate Bot",
+    "regexManagers": [
+        {
+            "fileMatch": [
+                "^Dockerfile$"
+            ],
+            "matchStrings": [
+                "#\\s+renovate:\\s+datasource=(?<datasource>.*?)\\s+depName=(?<depName>.*?)(?:\\s+versioning=(?<versioning>.*?))?(?:\\s+extractVersion=(?<extractVersion>.*?))?\\sARG\\s+.*?_VERSION=(?<currentValue>.*)"
+            ],
+            "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
+        }
+    ],
+    "packageRules": [
+        {
+            "matchPackagePatterns": [
+                "*"
+            ],
+            "matchDatasources": [
+                "docker"
+            ],
+            "groupName": "container images"
+        },
+        {
+            "matchPackagePatterns": [
+                "*"
+            ],
+            "matchDatasources": [
+                "git-refs",
+                "git-tags",
+                "github-tags",
+                "github-releases"
+            ],
+            "groupName": "releases"
+        }
+    ]
+}

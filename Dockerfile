@@ -1,14 +1,16 @@
-ARG DOCKER=docker:20.10.17
+ARG DOCKER=docker:20.10.17-dind
 
 FROM $DOCKER as docker
 
-# TODO: holding this to 3.15, as Google Cloud SDK is not compatible with Python 3.10
-#       https://issuetracker.google.com/issues/205005959?pli=1
-FROM alpine:3.15
+FROM alpine:3.16.2
 
-ARG CLOUD_SDK_VERSION=353.0.0
-ARG BUILDX=v0.8.2
-ARG GIT_CHGLOG_VERSION=0.9.1
+# https://github.com/twistedpair/google-cloud-sdk/ is a mirror that replicates the gcloud sdk versions
+# renovate: datasource=github-tags depName=twistedpair/google-cloud-sdk
+ARG CLOUD_SDK_VERSION=400.0.0
+# renovate: datasource=github-releases depName=docker/buildx
+ARG BUILDX_VERSION=v0.9.1
+# renovate: datasource=github-releases depName=git-chglog/git-chglog extractVersion=^v(?<version>.*)$
+ARG GIT_CHGLOG_VERSION=0.15.1
 
 # janky janky janky
 ENV PATH /google-cloud-sdk/bin:$PATH
@@ -55,8 +57,7 @@ RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cl
   gcloud config set component_manager/disable_update_check true && \
   gcloud config set metrics/environment github_docker_image
 
-# Install aws (TODO: alpine 3.15 should have s3cmd as a package)
-RUN pip3 install s3cmd
+RUN apk add s3cmd --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing
 
 # Install azure
 RUN pip3 install azure-cli
@@ -65,11 +66,12 @@ RUN pip3 install azure-cli
 ENV LD_LIBRARY_PATH=/lib:/usr/lib
 
 # Install buildx
-RUN curl --create-dirs -Lo /root/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/${BUILDX}/buildx-${BUILDX}.linux-amd64 \
+RUN curl --create-dirs -Lo /root/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/${BUILDX_VERSION}/buildx-${BUILDX_VERSION}.linux-amd64 \
   && chmod 755 /root/.docker/cli-plugins/docker-buildx
 
 # Install git-chglog
 RUN curl -Lo /usr/local/bin/git-chglog https://github.com/git-chglog/git-chglog/releases/download/${GIT_CHGLOG_VERSION}/git-chglog_linux_amd64
+RUN curl -L https://github.com/git-chglog/git-chglog/releases/download/v${GIT_CHGLOG_VERSION}/git-chglog_${GIT_CHGLOG_VERSION}_linux_amd64.tar.gz | tar xzf - -C /usr/local/bin git-chglog
 RUN chmod +x /usr/local/bin/git-chglog
 
 # Install codecov
