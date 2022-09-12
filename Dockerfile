@@ -6,7 +6,7 @@ FROM alpine:3.16.2
 
 # https://github.com/twistedpair/google-cloud-sdk/ is a mirror that replicates the gcloud sdk versions
 # renovate: datasource=github-tags depName=twistedpair/google-cloud-sdk
-ARG CLOUD_SDK_VERSION=400.0.0
+ARG CLOUD_SDK_VERSION=401.0.0
 # renovate: datasource=github-releases depName=docker/buildx
 ARG BUILDX_VERSION=v0.9.1
 # renovate: datasource=github-releases depName=git-chglog/git-chglog extractVersion=^v(?<version>.*)$
