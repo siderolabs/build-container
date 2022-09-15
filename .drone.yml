@@ -54,6 +54,12 @@ steps:
         exclude:
           - pull_request
 
+trigger:
+  branch:
+    exclude:
+      - renovate/*
+      - dependabot/*
+
 volumes:
   - name: docker-socket
     host:
@@ -82,6 +88,10 @@ steps:
         - failure
 
 trigger:
+  branch:
+    exclude:
+      - renovate/*
+      - dependabot/*
   status:
     - success
     - failure
