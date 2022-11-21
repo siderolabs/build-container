@@ -2,11 +2,11 @@ ARG DOCKER=docker:20.10.21-dind
 
 FROM $DOCKER as docker
 
-FROM alpine:3.16.2
+FROM alpine:3.16.3
 
 # https://github.com/twistedpair/google-cloud-sdk/ is a mirror that replicates the gcloud sdk versions
 # renovate: datasource=github-tags depName=twistedpair/google-cloud-sdk
-ARG CLOUD_SDK_VERSION=408.0.1
+ARG CLOUD_SDK_VERSION=410.0.0
 # renovate: datasource=github-releases depName=docker/buildx
 ARG BUILDX_VERSION=v0.9.1
 # renovate: datasource=github-releases depName=git-chglog/git-chglog extractVersion=^v(?<version>.*)$
