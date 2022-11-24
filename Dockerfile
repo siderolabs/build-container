@@ -57,7 +57,8 @@ RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cl
   gcloud config set component_manager/disable_update_check true && \
   gcloud config set metrics/environment github_docker_image
 
-RUN apk add s3cmd --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing
+# Install aws (probably Alpine will have this as a package one day)
+RUN pip3 install s3cmd
 
 # Install azure
 RUN pip3 install azure-cli
