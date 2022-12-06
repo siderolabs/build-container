@@ -2,7 +2,7 @@ ARG DOCKER=docker:20.10.21-dind
 
 FROM $DOCKER as docker
 
-FROM alpine:3.16.3
+FROM alpine:3.17.0
 
 # https://github.com/twistedpair/google-cloud-sdk/ is a mirror that replicates the gcloud sdk versions
 # renovate: datasource=github-tags depName=twistedpair/google-cloud-sdk
