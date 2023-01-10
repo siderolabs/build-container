@@ -8,9 +8,7 @@ FROM alpine:3.17.0
 # renovate: datasource=github-tags depName=twistedpair/google-cloud-sdk
 ARG CLOUD_SDK_VERSION=411.0.0
 # renovate: datasource=github-releases depName=docker/buildx
-ARG BUILDX_VERSION=v0.9.1
-# renovate: datasource=github-releases depName=git-chglog/git-chglog extractVersion=^v(?<version>.*)$
-ARG GIT_CHGLOG_VERSION=0.15.1
+ARG BUILDX_VERSION=v0.10.0
 
 # janky janky janky
 ENV PATH /google-cloud-sdk/bin:$PATH
@@ -69,11 +67,6 @@ ENV LD_LIBRARY_PATH=/lib:/usr/lib
 # Install buildx
 RUN curl --create-dirs -Lo /root/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/${BUILDX_VERSION}/buildx-${BUILDX_VERSION}.linux-amd64 \
   && chmod 755 /root/.docker/cli-plugins/docker-buildx
-
-# Install git-chglog
-RUN curl -Lo /usr/local/bin/git-chglog https://github.com/git-chglog/git-chglog/releases/download/${GIT_CHGLOG_VERSION}/git-chglog_linux_amd64
-RUN curl -L https://github.com/git-chglog/git-chglog/releases/download/v${GIT_CHGLOG_VERSION}/git-chglog_${GIT_CHGLOG_VERSION}_linux_amd64.tar.gz | tar xzf - -C /usr/local/bin git-chglog
-RUN chmod +x /usr/local/bin/git-chglog
 
 # Install codecov
 RUN curl -o codecov https://codecov.io/bash

@@ -16,6 +16,15 @@
                 "#\\s+renovate:\\s+datasource=(?<datasource>.*?)\\s+depName=(?<depName>.*?)(?:\\s+versioning=(?<versioning>.*?))?(?:\\s+extractVersion=(?<extractVersion>.*?))?\\sARG\\s+.*?_VERSION=(?<currentValue>.*)"
             ],
             "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
+        },
+        {
+            "fileMatch": [
+                "^setup-"
+            ],
+            "matchStrings": [
+                "#\\s+renovate:\\s+datasource=(?<datasource>.*?)\\s+depName=(?<depName>.*?)(?:\\s+versioning=(?<versioning>.*?))?(?:\\s+extractVersion=(?<extractVersion>.*?))?\\sBUILDKIT_IMAGE=\".+:(?<currentValue>.*)\""
+            ],
+            "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
         }
     ],
     "packageRules": [

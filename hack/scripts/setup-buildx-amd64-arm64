@@ -2,5 +2,8 @@
 
 set -eou pipefail
 
-docker buildx create --driver docker-container --platform linux/amd64 --name xbuild --use
-docker buildx create --append --name xbuild --platform linux/arm64 tcp://docker-arm64.ci.svc:2376
+# renovate: datasource=github-releases depName=moby/buildkit
+BUILDKIT_IMAGE="docker.io/moby/buildkit:v0.11.0"
+
+docker buildx create --driver docker-container --platform linux/amd64 --name xbuild --use --driver-opt image=${BUILDKIT_IMAGE}
+docker buildx create --append --name xbuild --platform linux/arm64 tcp://docker-arm64.ci.svc:2376 --driver-opt image=${BUILDKIT_IMAGE}
