@@ -6,9 +6,9 @@ FROM alpine:3.17.2
 
 # https://github.com/twistedpair/google-cloud-sdk/ is a mirror that replicates the gcloud sdk versions
 # renovate: datasource=github-tags depName=twistedpair/google-cloud-sdk
-ARG CLOUD_SDK_VERSION=419.0.0
+ARG CLOUD_SDK_VERSION=422.0.0
 # renovate: datasource=github-releases depName=docker/buildx
-ARG BUILDX_VERSION=v0.10.3
+ARG BUILDX_VERSION=v0.10.4
 
 # janky janky janky
 ENV PATH /google-cloud-sdk/bin:$PATH
