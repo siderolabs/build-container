@@ -3,7 +3,7 @@
 set -eou pipefail
 
 # renovate: datasource=github-releases depName=moby/buildkit
-BUILDKIT_IMAGE="docker.io/moby/buildkit:v0.11.2"
+BUILDKIT_IMAGE="docker.io/moby/buildkit:v0.11.5"
 
 docker buildx create --driver docker-container --platform linux/amd64 --name xbuild --use --driver-opt image=${BUILDKIT_IMAGE}
 docker buildx create --append --name xbuild --platform linux/arm64 tcp://docker-arm64.ci.svc:2376 --driver-opt image=${BUILDKIT_IMAGE}
