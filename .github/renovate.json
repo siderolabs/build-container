@@ -19,7 +19,7 @@
         },
         {
             "fileMatch": [
-                "^setup-"
+                "^hack/scripts/setup-"
             ],
             "matchStrings": [
                 "#\\s+renovate:\\s+datasource=(?<datasource>.*?)\\s+depName=(?<depName>.*?)(?:\\s+versioning=(?<versioning>.*?))?(?:\\s+extractVersion=(?<extractVersion>.*?))?\\sBUILDKIT_IMAGE=\".+:(?<currentValue>.*)\""

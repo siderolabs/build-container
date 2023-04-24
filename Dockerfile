@@ -1,12 +1,12 @@
-ARG DOCKER=docker:23.0.1-dind
+ARG DOCKER=docker:23.0.4-dind
 
 FROM $DOCKER as docker
 
-FROM alpine:3.17.2
+FROM alpine:3.17.3
 
 # https://github.com/twistedpair/google-cloud-sdk/ is a mirror that replicates the gcloud sdk versions
 # renovate: datasource=github-tags depName=twistedpair/google-cloud-sdk
-ARG CLOUD_SDK_VERSION=423.0.0
+ARG CLOUD_SDK_VERSION=427.0.0
 # renovate: datasource=github-releases depName=docker/buildx
 ARG BUILDX_VERSION=v0.10.4
 
@@ -19,6 +19,7 @@ RUN apk add --update --no-cache \
   cargo \
   coreutils \
   curl \
+  diffoscope \
   gcc \
   git \
   git-lfs \
