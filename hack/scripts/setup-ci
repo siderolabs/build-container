@@ -13,11 +13,13 @@ function setup_buildkit() {
     --name ci --buildkitd-flags "--allow-insecure-entitlement security.insecure" --driver-opt image=${BUILDKIT_IMAGE} \
     --platform linux/amd64 \
     --driver docker-container  \
+    --config /usr/local/bin/buildkit.toml \
     --use unix:///var/outer-run/docker.sock
 
   docker buildx create \
     --name ci --buildkitd-flags "--allow-insecure-entitlement security.insecure" --driver-opt image=${BUILDKIT_IMAGE} \
     --platform linux/arm64 \
+    --config /usr/local/bin/buildkit.toml \
     --append \
     tcp://docker-arm64.ci.svc:2376
 
@@ -29,6 +31,7 @@ function setup_buildkit_cross() {
   docker buildx create \
     --name ci --buildkitd-flags "--allow-insecure-entitlement security.insecure" --driver-opt image=${BUILDKIT_IMAGE} \
     --platform linux/amd64,linux/arm64 \
+    --config /usr/local/bin/buildkit.toml \
     --driver docker-container  \
     --use unix:///var/outer-run/docker.sock
 
