@@ -1,12 +1,12 @@
-ARG DOCKER=docker:23.0.4-dind
+ARG DOCKER=docker:24.0.2-dind
 
 FROM $DOCKER as docker
 
-FROM alpine:3.17.3
+FROM alpine:3.18.0
 
 # https://github.com/twistedpair/google-cloud-sdk/ is a mirror that replicates the gcloud sdk versions
 # renovate: datasource=github-tags depName=twistedpair/google-cloud-sdk
-ARG CLOUD_SDK_VERSION=427.0.0
+ARG CLOUD_SDK_VERSION=432.0.0
 # renovate: datasource=github-releases depName=docker/buildx
 ARG BUILDX_VERSION=v0.10.4
 
@@ -43,8 +43,10 @@ RUN apk add --update --no-cache \
   qemu-system-aarch64 \
   qemu-system-x86_64 \
   rust \
+  s3cmd \
   sed \
   socat \
+  swtpm \
   tar \
   xz
 
@@ -56,11 +58,11 @@ RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cl
   gcloud config set component_manager/disable_update_check true && \
   gcloud config set metrics/environment github_docker_image
 
-# Install aws (probably Alpine will have this as a package one day)
-RUN pip3 install s3cmd
-
 # Install azure
 RUN pip3 install azure-cli
+
+# Install ovmfctl
+RUN pip3 install ovmfctl
 
 # Required by docker-compose for zlib.
 ENV LD_LIBRARY_PATH=/lib:/usr/lib
