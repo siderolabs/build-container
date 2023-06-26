@@ -6,9 +6,9 @@ FROM alpine:3.18.0
 
 # https://github.com/twistedpair/google-cloud-sdk/ is a mirror that replicates the gcloud sdk versions
 # renovate: datasource=github-tags depName=twistedpair/google-cloud-sdk
-ARG CLOUD_SDK_VERSION=432.0.0
+ARG CLOUD_SDK_VERSION=436.0.0
 # renovate: datasource=github-releases depName=docker/buildx
-ARG BUILDX_VERSION=v0.10.4
+ARG BUILDX_VERSION=v0.11.0
 
 # janky janky janky
 ENV PATH /google-cloud-sdk/bin:$PATH
@@ -60,9 +60,6 @@ RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cl
 
 # Install azure
 RUN pip3 install azure-cli
-
-# Install ovmfctl
-RUN pip3 install ovmfctl
 
 # Required by docker-compose for zlib.
 ENV LD_LIBRARY_PATH=/lib:/usr/lib
