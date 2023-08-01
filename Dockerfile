@@ -18,6 +18,7 @@ RUN apk add --update --no-cache \
   bash \
   cargo \
   coreutils \
+  crane \
   curl \
   diffoscope \
   gcc \
