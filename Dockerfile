@@ -1,14 +1,14 @@
-ARG DOCKER=docker:24.0.2-dind
+ARG DOCKER=docker:24.0.6-dind
 
 FROM $DOCKER as docker
 
-FROM alpine:3.18.0
+FROM alpine:3.18.4
 
 # https://github.com/twistedpair/google-cloud-sdk/ is a mirror that replicates the gcloud sdk versions
 # renovate: datasource=github-tags depName=twistedpair/google-cloud-sdk
-ARG CLOUD_SDK_VERSION=436.0.0
+ARG CLOUD_SDK_VERSION=448.0.0
 # renovate: datasource=github-releases depName=docker/buildx
-ARG BUILDX_VERSION=v0.11.0
+ARG BUILDX_VERSION=v0.11.2
 
 # janky janky janky
 ENV PATH /google-cloud-sdk/bin:$PATH

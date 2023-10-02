@@ -29,6 +29,7 @@ steps:
         path: /root/.docker/buildx
     commands:
       - docker buildx build -f Dockerfile -t autonomy/build-container .
+      - docker buildx build -f Dockerfile.actions-runner-ubuntu-22.04 -t autonomy/build-container:actions-runner-ubuntu-22.04 .
     when:
       event:
         - pull_request
@@ -49,6 +50,7 @@ steps:
     commands:
       - docker login --username "$${DOCKER_USERNAME}" --password "$${DOCKER_PASSWORD}"
       - docker buildx build -f Dockerfile -t autonomy/build-container --push .
+      - docker buildx build -f Dockerfile.actions-runner-ubuntu-22.04 -t autonomy/build-container:actions-runner-ubuntu-22.04 --push .
     when:
       event:
         exclude:

@@ -1,0 +1,19 @@
+FROM summerwind/actions-runner-dind:ubuntu-22.04
+USER root
+RUN apt update && \
+	apt upgrade -y && \
+	apt install -y \
+	--no-install-recommends \
+	make \
+	tmux \
+	qemu-system \
+	qemu-utils \
+	socat \
+	ovmf \
+	swtpm \
+	iptables \
+	iproute2 \
+	openssh-client \
+	docker.io \
+	diffoscope
+USER runner
