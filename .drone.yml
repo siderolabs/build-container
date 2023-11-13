@@ -8,7 +8,7 @@ platform:
 
 steps:
   - name: setup-ci
-    image: ghcr.io/frezbo/build-container:latest
+    image: autonomy/build-container:latest
     commands:
       - git fetch --tags
       - install-ci-key
@@ -20,7 +20,7 @@ steps:
         path: /root/.docker/buildx
 
   - name: build-dry-run
-    image: ghcr.io/frezbo/build-container:latest
+    image: autonomy/build-container:latest
     pull: always
     volumes:
       - name: docker-socket
@@ -35,7 +35,7 @@ steps:
         - pull_request
 
   - name: build-and-push
-    image: ghcr.io/frezbo/build-container:latest
+    image: autonomy/build-container:latest
     pull: always
     volumes:
       - name: docker-socket
