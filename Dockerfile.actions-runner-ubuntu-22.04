@@ -15,5 +15,6 @@ RUN apt update && \
 	iproute2 \
 	openssh-client \
 	docker.io \
-	diffoscope
+	diffoscope \
+	gh
 USER runner
