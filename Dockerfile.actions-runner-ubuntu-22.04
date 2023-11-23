@@ -1,4 +1,6 @@
 FROM summerwind/actions-runner-dind:ubuntu-22.04
+# renovate: datasource=github-releases depName=google/go-containerregistry
+ARG CRANE_VERSION=v0.16.1
 USER root
 RUN apt update && \
 	apt upgrade -y && \
@@ -17,4 +19,5 @@ RUN apt update && \
 	docker.io \
 	diffoscope \
 	gh
+RUN curl -SL https://github.com/google/go-containerregistry/releases/download/${CRANE_VERSION}/go-containerregistry_Linux_x86_64.tar.gz | tar xzf - -C /usr/local/bin/ crane
 USER runner
