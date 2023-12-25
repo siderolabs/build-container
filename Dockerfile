@@ -49,6 +49,7 @@ RUN apk add --update --no-cache \
   socat \
   swtpm \
   tar \
+  yq \
   xz
 
 # Install gcloud
