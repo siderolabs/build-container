@@ -1,12 +1,12 @@
-ARG DOCKER=docker:24.0.7-dind
+ARG DOCKER=docker:25.0.2-dind
 
 FROM $DOCKER as docker
 
-FROM alpine:3.18.4
+FROM alpine:3.19.1
 
 # https://github.com/twistedpair/google-cloud-sdk/ is a mirror that replicates the gcloud sdk versions
 # renovate: datasource=github-tags depName=twistedpair/google-cloud-sdk
-ARG CLOUD_SDK_VERSION=455.0.0
+ARG CLOUD_SDK_VERSION=458.0.1
 # renovate: datasource=github-releases depName=docker/buildx
 ARG BUILDX_VERSION=v0.12.1
 
@@ -61,7 +61,7 @@ RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cl
   gcloud config set metrics/environment github_docker_image
 
 # Install azure
-RUN pip3 install azure-cli
+RUN pip3 install azure-cli --break-system-packages
 
 # Required by docker-compose for zlib.
 ENV LD_LIBRARY_PATH=/lib:/usr/lib
