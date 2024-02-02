@@ -8,7 +8,7 @@ FROM alpine:3.18.4
 # renovate: datasource=github-tags depName=twistedpair/google-cloud-sdk
 ARG CLOUD_SDK_VERSION=455.0.0
 # renovate: datasource=github-releases depName=docker/buildx
-ARG BUILDX_VERSION=v0.12.0
+ARG BUILDX_VERSION=v0.12.1
 
 # janky janky janky
 ENV PATH /google-cloud-sdk/bin:$PATH
