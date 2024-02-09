@@ -2,7 +2,7 @@ ARG DOCKER=docker:25.0.2-dind
 
 FROM $DOCKER as docker
 
-FROM alpine:3.18.4
+FROM alpine:3.19.1
 
 # https://github.com/twistedpair/google-cloud-sdk/ is a mirror that replicates the gcloud sdk versions
 # renovate: datasource=github-tags depName=twistedpair/google-cloud-sdk
@@ -34,7 +34,6 @@ RUN apk add --update --no-cache \
   musl-dev \
   openssh-client \
   openssl-dev \
-  ovmf \
   perl-utils \
   py3-crcmod \
   py3-pip \
@@ -51,6 +50,9 @@ RUN apk add --update --no-cache \
   tar \
   yq \
   xz
+
+# workaround, install older OVMF version from Alpine 3.18
+RUN apk add --no-cache  --repository=https://pkgs.alpinelinux.org/package/v3.18/community ovmf
 
 # Install gcloud
 RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz && \
