@@ -9,6 +9,8 @@ FROM alpine:3.19.1
 ARG CLOUD_SDK_VERSION=458.0.1
 # renovate: datasource=github-releases depName=docker/buildx
 ARG BUILDX_VERSION=v0.12.1
+# renovate: datasource=github-releases extractVersion=^v(?<version>.*)$ depName=hashicorp/terraform
+ARG TERRAFORM_VERSION=1.7.3
 
 # janky janky janky
 ENV PATH /google-cloud-sdk/bin:$PATH
@@ -71,6 +73,12 @@ ENV LD_LIBRARY_PATH=/lib:/usr/lib
 # Install buildx
 RUN curl --create-dirs -Lo /root/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/${BUILDX_VERSION}/buildx-${BUILDX_VERSION}.linux-amd64 \
   && chmod 755 /root/.docker/cli-plugins/docker-buildx
+
+# Install terraform
+RUN curl -Lo /tmp/terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
+  && unzip /tmp/terraform.zip -d /usr/local/bin \
+  && chmod +x /usr/local/bin/terraform \
+  && rm /tmp/terraform.zip
 
 # Install codecov
 RUN curl -o codecov https://codecov.io/bash
