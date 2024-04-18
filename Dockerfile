@@ -1,4 +1,4 @@
-ARG DOCKER=docker:25.0.2-dind
+ARG DOCKER=docker:26.0.1-dind
 
 FROM $DOCKER as docker
 
@@ -6,9 +6,9 @@ FROM alpine:3.19.1
 
 # https://github.com/twistedpair/google-cloud-sdk/ is a mirror that replicates the gcloud sdk versions
 # renovate: datasource=github-tags depName=twistedpair/google-cloud-sdk
-ARG CLOUD_SDK_VERSION=458.0.1
+ARG CLOUD_SDK_VERSION=472.0.0
 # renovate: datasource=github-releases depName=docker/buildx
-ARG BUILDX_VERSION=v0.12.1
+ARG BUILDX_VERSION=v0.13.1
 # renovate: datasource=github-releases extractVersion=^v(?<version>.*)$ depName=hashicorp/terraform
 ARG TERRAFORM_VERSION=1.7.3
 
