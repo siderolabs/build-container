@@ -51,7 +51,8 @@ RUN apk add --update --no-cache \
   swtpm \
   tar \
   yq \
-  xz
+  xz \
+  zstd
 
 # workaround, install older OVMF version from Alpine 3.18
 RUN apk add --no-cache ovmf=0.0.202302-r0 --repository=https://dl-cdn.alpinelinux.org/alpine/v3.18/community

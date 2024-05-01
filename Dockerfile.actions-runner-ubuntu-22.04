@@ -22,7 +22,8 @@ RUN apt update && \
 	openssh-client \
 	docker.io \
 	diffoscope \
-	gh
+	gh \
+	zstd
 
 RUN curl -fSL https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64 -o /usr/bin/yq && chmod +x /usr/bin/yq
 RUN curl -fSL https://github.com/google/go-containerregistry/releases/download/${CRANE_VERSION}/go-containerregistry_Linux_x86_64.tar.gz | tar xzf - -C /usr/local/bin/ crane
