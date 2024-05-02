@@ -16,13 +16,6 @@ function setup_buildkit() {
     --config /usr/local/bin/buildkit.toml \
     --use unix:///var/outer-run/docker.sock
 
-  docker buildx create \
-    --name ci --buildkitd-flags "--allow-insecure-entitlement security.insecure" --driver-opt image=${BUILDKIT_IMAGE} \
-    --platform linux/arm64 \
-    --config /usr/local/bin/buildkit.toml \
-    --append \
-    tcp://docker-arm64.ci.svc:2376
-
   docker buildx inspect --bootstrap
 }
 
