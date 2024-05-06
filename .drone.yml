@@ -12,20 +12,28 @@ steps:
     commands:
       - git fetch --tags
       - install-ci-key
-      - setup-buildx-amd64-arm64
+      - setup-ci
     volumes:
+      - name: outer-docker-socket
+        path: /var/outer-run
       - name: docker-socket
         path: /var/run
-      - name: docker
+      - name: ssh
+        path: /root/.ssh
+      - name: buildx
         path: /root/.docker/buildx
 
   - name: build-dry-run
     image: autonomy/build-container:latest
     pull: always
     volumes:
+      - name: outer-docker-socket
+        path: /var/outer-run
       - name: docker-socket
         path: /var/run
-      - name: docker
+      - name: ssh
+        path: /root/.ssh
+      - name: buildx
         path: /root/.docker/buildx
     commands:
       - docker buildx build -f Dockerfile -t autonomy/build-container .
@@ -38,9 +46,13 @@ steps:
     image: autonomy/build-container:latest
     pull: always
     volumes:
+      - name: outer-docker-socket
+        path: /var/outer-run
       - name: docker-socket
         path: /var/run
-      - name: docker
+      - name: ssh
+        path: /root/.ssh
+      - name: buildx
         path: /root/.docker/buildx
     environment:
       DOCKER_USERNAME:
@@ -62,12 +74,40 @@ trigger:
       - renovate/*
       - dependabot/*
 
-volumes:
+services:
+- name: docker
+  image: docker:20.10-dind
+  entrypoint:
+  - dockerd
+  commands:
+  - --dns=8.8.8.8
+  - --dns=8.8.4.4
+  - --mtu=1500
+  - --log-level=error
+  privileged: true
+  volumes:
   - name: docker-socket
+    path: /var/run
+  - name: outer-docker-socket
+    path: /var/outer-run
+  - name: buildx
+    path: /root/.docker/buildx
+  - name: ssh
+    path: /root/.ssh
+
+volumes:
+  - name: outer-docker-socket
     host:
       path: /var/ci-docker
-  - name: docker
-    temp: {}
+  - name: docker-socket
+    temp:
+      medium: memory
+  - name: buildx
+    temp:
+      medium: memory
+  - name: ssh
+    temp:
+      medium: memory
 
 ---
 kind: pipeline
