@@ -6,7 +6,7 @@ FROM alpine:3.19.1
 
 # https://github.com/twistedpair/google-cloud-sdk/ is a mirror that replicates the gcloud sdk versions
 # renovate: datasource=github-tags depName=twistedpair/google-cloud-sdk
-ARG CLOUD_SDK_VERSION=472.0.0
+ARG CLOUD_SDK_VERSION=482.0.0
 # renovate: datasource=github-releases depName=docker/buildx
 ARG BUILDX_VERSION=v0.13.1
 # renovate: datasource=github-releases extractVersion=^v(?<version>.*)$ depName=hashicorp/terraform
