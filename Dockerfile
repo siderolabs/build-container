@@ -1,4 +1,4 @@
-ARG DOCKER=docker:26.0.1-dind
+ARG DOCKER=docker:27.0.2-dind
 
 FROM $DOCKER as docker
 
