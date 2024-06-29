@@ -8,7 +8,7 @@ FROM alpine:3.19.1
 # renovate: datasource=github-tags depName=twistedpair/google-cloud-sdk
 ARG CLOUD_SDK_VERSION=472.0.0
 # renovate: datasource=github-releases depName=docker/buildx
-ARG BUILDX_VERSION=v0.13.1
+ARG BUILDX_VERSION=v0.15.1
 # renovate: datasource=github-releases extractVersion=^v(?<version>.*)$ depName=hashicorp/terraform
 ARG TERRAFORM_VERSION=1.7.3
 

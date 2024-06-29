@@ -1,12 +1,12 @@
 FROM summerwind/actions-runner-dind:ubuntu-22.04
 # renovate: datasource=github-releases depName=google/go-containerregistry
-ARG CRANE_VERSION=v0.19.1
+ARG CRANE_VERSION=v0.19.2
 # renovate: datasource=github-releases depName=mikefarah/yq
-ARG YQ_VERSION=v4.43.1
+ARG YQ_VERSION=v4.44.2
 # renovate: datasource=github-releases depName=getsops/sops
-ARG SOPS_VERSION=v3.8.1
+ARG SOPS_VERSION=v3.9.0
 # renovate: datasource=github-tags depName=aws/aws-cli
-ARG AWSCLI_VERSION=2.15.44
+ARG AWSCLI_VERSION=2.17.5
 USER root
 RUN apt update && \
 	apt upgrade -y && \
