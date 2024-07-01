@@ -1,14 +1,14 @@
-ARG DOCKER=docker:26.0.1-dind
+ARG DOCKER=docker:27.0.2-dind
 
 FROM $DOCKER as docker
 
-FROM alpine:3.19.1
+FROM alpine:3.20.1 as build-container-drone
 
 # https://github.com/twistedpair/google-cloud-sdk/ is a mirror that replicates the gcloud sdk versions
 # renovate: datasource=github-tags depName=twistedpair/google-cloud-sdk
-ARG CLOUD_SDK_VERSION=472.0.0
+ARG CLOUD_SDK_VERSION=482.0.0
 # renovate: datasource=github-releases depName=docker/buildx
-ARG BUILDX_VERSION=v0.13.1
+ARG BUILDX_VERSION=v0.15.1
 # renovate: datasource=github-releases extractVersion=^v(?<version>.*)$ depName=hashicorp/terraform
 ARG TERRAFORM_VERSION=1.7.3
 
@@ -90,3 +90,38 @@ RUN chmod +x codecov && mv codecov /usr/local/bin/
 ADD hack/scripts/ /usr/local/bin/
 
 COPY --from=docker /usr/local/bin/docker /usr/local/bin/dockerd /usr/local/bin/
+
+FROM summerwind/actions-runner-dind:ubuntu-22.04 as build-container-ghaction
+# renovate: datasource=github-releases depName=google/go-containerregistry
+ARG CRANE_VERSION=v0.19.2
+# renovate: datasource=github-releases depName=mikefarah/yq
+ARG YQ_VERSION=v4.44.2
+# renovate: datasource=github-releases depName=getsops/sops
+ARG SOPS_VERSION=v3.9.0
+# renovate: datasource=github-tags depName=aws/aws-cli
+ARG AWSCLI_VERSION=2.17.5
+USER root
+RUN apt update && \
+	apt upgrade -y && \
+	apt install -y \
+	--no-install-recommends \
+	make \
+	tmux \
+	qemu-system \
+	qemu-utils \
+	socat \
+	ovmf \
+	swtpm \
+	iptables \
+	iproute2 \
+	openssh-client \
+	docker.io \
+	diffoscope \
+	gh \
+	zstd
+
+RUN curl -fSL https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64 -o /usr/bin/yq && chmod +x /usr/bin/yq
+RUN curl -fSL https://github.com/google/go-containerregistry/releases/download/${CRANE_VERSION}/go-containerregistry_Linux_x86_64.tar.gz | tar xzf - -C /usr/local/bin/ crane
+RUN curl -fSL https://github.com/getsops/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}.linux.amd64 -o /usr/bin/sops && chmod +x /usr/bin/sops
+RUN curl -fSL https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${AWSCLI_VERSION}.zip -o awscliv2.zip && unzip awscliv2.zip && ./aws/install && rm -rf awscliv2.zip aws
+USER runner

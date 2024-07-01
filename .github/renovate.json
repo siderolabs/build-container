@@ -10,7 +10,7 @@
     "regexManagers": [
         {
             "fileMatch": [
-                "^Dockerfile.*$"
+                "^Dockerfile$"
             ],
             "matchStrings": [
                 "#\\s+renovate:\\s+datasource=(?<datasource>.*?)\\s+depName=(?<depName>.*?)(?:\\s+versioning=(?<versioning>.*?))?(?:\\s+extractVersion=(?<extractVersion>.*?))?\\sARG\\s+.*?_VERSION=(?<currentValue>.*)"
