@@ -1,4 +1,4 @@
-ARG DOCKER=docker:27.0.2-dind
+ARG DOCKER=docker:27.0.3-dind
 
 FROM $DOCKER as docker
 
@@ -6,9 +6,9 @@ FROM alpine:3.20.1 as build-container-drone
 
 # https://github.com/twistedpair/google-cloud-sdk/ is a mirror that replicates the gcloud sdk versions
 # renovate: datasource=github-tags depName=twistedpair/google-cloud-sdk
-ARG CLOUD_SDK_VERSION=482.0.0
+ARG CLOUD_SDK_VERSION=484.0.0
 # renovate: datasource=github-releases depName=docker/buildx
-ARG BUILDX_VERSION=v0.15.1
+ARG BUILDX_VERSION=v0.16.0
 # renovate: datasource=github-releases extractVersion=^v(?<version>.*)$ depName=hashicorp/terraform
 ARG TERRAFORM_VERSION=1.7.3
 
@@ -93,13 +93,13 @@ COPY --from=docker /usr/local/bin/docker /usr/local/bin/dockerd /usr/local/bin/
 
 FROM summerwind/actions-runner-dind:ubuntu-22.04 as build-container-ghaction
 # renovate: datasource=github-releases depName=google/go-containerregistry
-ARG CRANE_VERSION=v0.19.2
+ARG CRANE_VERSION=v0.20.1
 # renovate: datasource=github-releases depName=mikefarah/yq
 ARG YQ_VERSION=v4.44.2
 # renovate: datasource=github-releases depName=getsops/sops
 ARG SOPS_VERSION=v3.9.0
 # renovate: datasource=github-tags depName=aws/aws-cli
-ARG AWSCLI_VERSION=2.17.5
+ARG AWSCLI_VERSION=2.17.13
 USER root
 RUN apt update && \
 	apt upgrade -y && \
