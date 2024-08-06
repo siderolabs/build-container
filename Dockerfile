@@ -1,8 +1,8 @@
-ARG DOCKER=docker:27.0.3-dind
+ARG DOCKER=docker:27.1.1-dind
 
 FROM $DOCKER as docker
 
-FROM alpine:3.20.1 as build-container-drone
+FROM alpine:3.20.2 as build-container-drone
 
 # https://github.com/twistedpair/google-cloud-sdk/ is a mirror that replicates the gcloud sdk versions
 # renovate: datasource=github-tags depName=twistedpair/google-cloud-sdk
