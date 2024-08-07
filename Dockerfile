@@ -8,7 +8,7 @@ FROM alpine:3.20.1 as build-container-drone
 # renovate: datasource=github-tags depName=twistedpair/google-cloud-sdk
 ARG CLOUD_SDK_VERSION=484.0.0
 # renovate: datasource=github-releases depName=docker/buildx
-ARG BUILDX_VERSION=v0.16.0
+ARG BUILDX_VERSION=v0.16.2
 # renovate: datasource=github-releases extractVersion=^v(?<version>.*)$ depName=hashicorp/terraform
 ARG TERRAFORM_VERSION=1.7.3
 
@@ -93,13 +93,13 @@ COPY --from=docker /usr/local/bin/docker /usr/local/bin/dockerd /usr/local/bin/
 
 FROM summerwind/actions-runner-dind:ubuntu-22.04 as build-container-ghaction
 # renovate: datasource=github-releases depName=google/go-containerregistry
-ARG CRANE_VERSION=v0.20.1
+ARG CRANE_VERSION=v0.20.2
 # renovate: datasource=github-releases depName=mikefarah/yq
-ARG YQ_VERSION=v4.44.2
+ARG YQ_VERSION=v4.44.3
 # renovate: datasource=github-releases depName=getsops/sops
 ARG SOPS_VERSION=v3.9.0
 # renovate: datasource=github-tags depName=aws/aws-cli
-ARG AWSCLI_VERSION=2.17.13
+ARG AWSCLI_VERSION=2.17.24
 USER root
 RUN apt update && \
 	apt upgrade -y && \
