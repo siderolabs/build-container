@@ -1,14 +1,14 @@
-ARG DOCKER=docker:27.1.1-dind
+ARG DOCKER=docker:27.2.1-dind
 
-FROM $DOCKER as docker
+FROM $DOCKER AS docker
 
-FROM alpine:3.20.2 as build-container-drone
+FROM alpine:3.20.3 AS build-container-drone
 
 # https://github.com/twistedpair/google-cloud-sdk/ is a mirror that replicates the gcloud sdk versions
 # renovate: datasource=github-tags depName=twistedpair/google-cloud-sdk
-ARG CLOUD_SDK_VERSION=487.0.0
+ARG CLOUD_SDK_VERSION=492.0.0
 # renovate: datasource=github-releases depName=docker/buildx
-ARG BUILDX_VERSION=v0.16.2
+ARG BUILDX_VERSION=v0.17.1
 # renovate: datasource=github-releases extractVersion=^v(?<version>.*)$ depName=hashicorp/terraform
 ARG TERRAFORM_VERSION=1.7.3
 
@@ -91,7 +91,7 @@ ADD hack/scripts/ /usr/local/bin/
 
 COPY --from=docker /usr/local/bin/docker /usr/local/bin/dockerd /usr/local/bin/
 
-FROM summerwind/actions-runner-dind:ubuntu-22.04 as build-container-ghaction
+FROM ghcr.io/actions/actions-runner:2.319.1 AS build-container-ghaction
 # renovate: datasource=github-releases depName=google/go-containerregistry
 ARG CRANE_VERSION=v0.20.2
 # renovate: datasource=github-releases depName=mikefarah/yq
@@ -99,12 +99,14 @@ ARG YQ_VERSION=v4.44.3
 # renovate: datasource=github-releases depName=getsops/sops
 ARG SOPS_VERSION=v3.9.0
 # renovate: datasource=github-tags depName=aws/aws-cli
-ARG AWSCLI_VERSION=2.17.24
+ARG AWSCLI_VERSION=2.17.51
 USER root
 RUN apt update && \
 	apt upgrade -y && \
 	apt install -y \
 	--no-install-recommends \
+	curl \
+	unzip \
 	make \
 	tmux \
 	qemu-system \

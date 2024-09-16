@@ -5,7 +5,7 @@ set -ex
 export TAG=$(git log --oneline --format=%B -n 1 HEAD | head -n 1 | sed -r "/^release\(/ s/^release\((.*)\):.*$/\\1/; t; Q")
 
 # renovate: datasource=github-releases depName=moby/buildkit
-BUILDKIT_IMAGE="docker.io/moby/buildkit:v0.15.1"
+BUILDKIT_IMAGE="docker.io/moby/buildkit:v0.16.0"
 
 # setup buildkit across amd64/arm64 workers
 function setup_buildkit() {
