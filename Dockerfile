@@ -97,9 +97,9 @@ ARG CRANE_VERSION=v0.20.2
 # renovate: datasource=github-releases depName=mikefarah/yq
 ARG YQ_VERSION=v4.44.3
 # renovate: datasource=github-releases depName=getsops/sops
-ARG SOPS_VERSION=v3.9.0
+ARG SOPS_VERSION=v3.9.1
 # renovate: datasource=github-tags depName=aws/aws-cli
-ARG AWSCLI_VERSION=2.17.51
+ARG AWSCLI_VERSION=2.18.9
 USER root
 RUN apt update && \
 	apt upgrade -y && \
