@@ -19,6 +19,7 @@ RUN apk add --update --no-cache \
   aws-cli \
   bash \
   cargo \
+  cdrkit \
   coreutils \
   crane \
   curl \
