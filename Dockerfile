@@ -107,20 +107,21 @@ RUN apt update && \
 	apt install -y \
 	--no-install-recommends \
 	curl \
-	unzip \
+	diffoscope \
+	docker.io \
+	gh \
+	iproute2 \
+	iptables \
 	make \
-	tmux \
+	mkisofs \
+	openssh-client \
+	ovmf \
 	qemu-system \
 	qemu-utils \
 	socat \
-	ovmf \
 	swtpm \
-	iptables \
-	iproute2 \
-	openssh-client \
-	docker.io \
-	diffoscope \
-	gh \
+	tmux \
+	unzip \
 	zstd
 
 RUN curl -fSL https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64 -o /usr/bin/yq && chmod +x /usr/bin/yq
