@@ -75,7 +75,7 @@ ADD hack/scripts/ /usr/local/bin/
 
 COPY --from=docker /usr/local/bin/docker /usr/local/bin/dockerd /usr/local/bin/
 
-FROM summerwind/actions-runner-dind:ubuntu-22.04 AS build-container-ghaction
+FROM ghcr.io/actions-runner-controller/actions-runner-controller/actions-runner-dind:ubuntu-22.04 AS build-container-ghaction
 # renovate: datasource=github-releases depName=google/go-containerregistry
 ARG CRANE_VERSION=v0.20.2
 # renovate: datasource=github-releases depName=mikefarah/yq
