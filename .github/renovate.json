@@ -7,8 +7,9 @@
         "schedule:earlyMondays"
     ],
     "prHeader": "Update Request | Renovate Bot",
-    "regexManagers": [
+    "customManagers": [
         {
+            "customType": "regex",
             "fileMatch": [
                 "^Dockerfile$"
             ],
@@ -18,6 +19,7 @@
             "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
         },
         {
+            "customType": "regex",
             "fileMatch": [
                 "^hack/scripts/setup-"
             ],
@@ -29,25 +31,25 @@
     ],
     "packageRules": [
         {
-            "matchPackagePatterns": [
-                "*"
-            ],
             "matchDatasources": [
                 "docker"
             ],
-            "groupName": "container images"
+            "groupName": "container images",
+            "matchPackageNames": [
+                "*"
+            ]
         },
         {
-            "matchPackagePatterns": [
-                "*"
-            ],
             "matchDatasources": [
                 "git-refs",
                 "git-tags",
                 "github-tags",
                 "github-releases"
             ],
-            "groupName": "releases"
+            "groupName": "releases",
+            "matchPackageNames": [
+                "*"
+            ]
         }
     ]
 }

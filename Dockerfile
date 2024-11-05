@@ -1,19 +1,13 @@
-ARG DOCKER=docker:27.2.1-dind
+ARG DOCKER=docker:27.3.1-dind
 
 FROM $DOCKER AS docker
 
 FROM alpine:3.20.3 AS build-container-drone
 
-# https://github.com/twistedpair/google-cloud-sdk/ is a mirror that replicates the gcloud sdk versions
-# renovate: datasource=github-tags depName=twistedpair/google-cloud-sdk
-ARG CLOUD_SDK_VERSION=492.0.0
 # renovate: datasource=github-releases depName=docker/buildx
-ARG BUILDX_VERSION=v0.17.1
+ARG BUILDX_VERSION=v0.18.0
 # renovate: datasource=github-releases extractVersion=^v(?<version>.*)$ depName=hashicorp/terraform
 ARG TERRAFORM_VERSION=1.7.3
-
-# janky janky janky
-ENV PATH /google-cloud-sdk/bin:$PATH
 
 RUN apk add --update --no-cache \
   aws-cli \
@@ -58,17 +52,6 @@ RUN apk add --update --no-cache \
 # workaround, install older OVMF version from Alpine 3.18
 RUN apk add --no-cache ovmf=0.0.202302-r0 --repository=https://dl-cdn.alpinelinux.org/alpine/v3.18/community
 
-# Install gcloud
-RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz && \
-  tar xzf google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz && \
-  rm google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz && \
-  gcloud config set core/disable_usage_reporting true && \
-  gcloud config set component_manager/disable_update_check true && \
-  gcloud config set metrics/environment github_docker_image
-
-# Install azure
-RUN pip3 install azure-cli --break-system-packages
-
 # Required by docker-compose for zlib.
 ENV LD_LIBRARY_PATH=/lib:/usr/lib
 
@@ -98,9 +81,9 @@ ARG CRANE_VERSION=v0.20.2
 # renovate: datasource=github-releases depName=mikefarah/yq
 ARG YQ_VERSION=v4.44.3
 # renovate: datasource=github-releases depName=getsops/sops
-ARG SOPS_VERSION=v3.9.0
+ARG SOPS_VERSION=v3.9.1
 # renovate: datasource=github-tags depName=aws/aws-cli
-ARG AWSCLI_VERSION=2.17.51
+ARG AWSCLI_VERSION=2.19.1
 USER root
 RUN apt update && \
 	apt upgrade -y && \
