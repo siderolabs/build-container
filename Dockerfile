@@ -5,7 +5,7 @@ FROM $DOCKER AS docker
 FROM alpine:3.20.3 AS build-container-drone
 
 # renovate: datasource=github-releases depName=docker/buildx
-ARG BUILDX_VERSION=v0.18.0
+ARG BUILDX_VERSION=v0.20.1
 # renovate: datasource=github-releases extractVersion=^v(?<version>.*)$ depName=hashicorp/terraform
 ARG TERRAFORM_VERSION=1.7.3
 
@@ -77,13 +77,13 @@ COPY --from=docker /usr/local/bin/docker /usr/local/bin/dockerd /usr/local/bin/
 
 FROM ghcr.io/actions-runner-controller/actions-runner-controller/actions-runner-dind:ubuntu-22.04 AS build-container-ghaction
 # renovate: datasource=github-releases depName=google/go-containerregistry
-ARG CRANE_VERSION=v0.20.2
+ARG CRANE_VERSION=v0.20.3
 # renovate: datasource=github-releases depName=mikefarah/yq
-ARG YQ_VERSION=v4.44.3
+ARG YQ_VERSION=v4.45.1
 # renovate: datasource=github-releases depName=getsops/sops
-ARG SOPS_VERSION=v3.9.1
+ARG SOPS_VERSION=v3.9.4
 # renovate: datasource=github-tags depName=aws/aws-cli
-ARG AWSCLI_VERSION=2.19.1
+ARG AWSCLI_VERSION=2.24.5
 USER root
 RUN apt update && \
 	apt upgrade -y && \
