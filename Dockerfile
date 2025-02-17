@@ -1,8 +1,8 @@
-ARG DOCKER=docker:27.3.1-dind
+ARG DOCKER=docker:27.5.1-dind
 
 FROM $DOCKER AS docker
 
-FROM alpine:3.20.3 AS build-container-drone
+FROM alpine:3.21.3 AS build-container-drone
 
 # renovate: datasource=github-releases depName=docker/buildx
 ARG BUILDX_VERSION=v0.18.0
