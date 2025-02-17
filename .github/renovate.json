@@ -1,55 +1,46 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "description": "THIS FILE WAS AUTOMATICALLY GENERATED, PLEASE DO NOT EDIT.",
+    "prHeader": "Update Request | Renovate Bot",
     "extends": [
         ":dependencyDashboard",
         ":gitSignOff",
         ":semanticCommitScopeDisabled",
         "schedule:earlyMondays"
     ],
-    "prHeader": "Update Request | Renovate Bot",
     "customManagers": [
         {
             "customType": "regex",
+            "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}",
             "fileMatch": [
                 "^Dockerfile$"
             ],
             "matchStrings": [
                 "#\\s+renovate:\\s+datasource=(?<datasource>.*?)\\s+depName=(?<depName>.*?)(?:\\s+versioning=(?<versioning>.*?))?(?:\\s+extractVersion=(?<extractVersion>.*?))?\\sARG\\s+.*?_VERSION=(?<currentValue>.*)"
-            ],
-            "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
+            ]
         },
         {
             "customType": "regex",
+            "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}",
             "fileMatch": [
                 "^hack/scripts/setup-"
             ],
             "matchStrings": [
-                "#\\s+renovate:\\s+datasource=(?<datasource>.*?)\\s+depName=(?<depName>.*?)(?:\\s+versioning=(?<versioning>.*?))?(?:\\s+extractVersion=(?<extractVersion>.*?))?\\sBUILDKIT_IMAGE=\".+:(?<currentValue>.*)\""
-            ],
-            "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
+                "#\\s+renovate:\\s+datasource=(?<datasource>.*?)\\s+depName=(?<depName>.*?)(?:\\s+versioning=(?<versioning>.*?))?(?:\\s+extractVersion=(?<extractVersion>.*?))?\\sBUILDKIT_IMAGE=\\\".+:(?<currentValue>.*)\\\""
+            ]
         }
     ],
     "packageRules": [
         {
-            "matchDatasources": [
-                "docker"
-            ],
-            "groupName": "container images",
-            "matchPackageNames": [
-                "*"
-            ]
-        },
-        {
-            "matchDatasources": [
-                "git-refs",
-                "git-tags",
-                "github-tags",
-                "github-releases"
-            ],
-            "groupName": "releases",
-            "matchPackageNames": [
-                "*"
+            "groupName": "dependencies",
+            "matchUpdateTypes": [
+                "major",
+                "minor",
+                "patch",
+                "pin",
+                "digest"
             ]
         }
-    ]
+    ],
+    "separateMajorMinor": false
 }

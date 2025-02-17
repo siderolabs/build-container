@@ -28,3 +28,19 @@ spec:
           command: make
           environment:
             PUSH: true
+---
+kind: common.Renovate
+spec:
+  customManagers:
+    - customType: regex
+      fileMatch:
+        - ^Dockerfile$
+      matchStrings:
+        - '#\s+renovate:\s+datasource=(?<datasource>.*?)\s+depName=(?<depName>.*?)(?:\s+versioning=(?<versioning>.*?))?(?:\s+extractVersion=(?<extractVersion>.*?))?\sARG\s+.*?_VERSION=(?<currentValue>.*)'
+      versioningTemplate: "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
+    - customType: regex
+      fileMatch:
+        - ^hack/scripts/setup-
+      matchStrings:
+        - '#\s+renovate:\s+datasource=(?<datasource>.*?)\s+depName=(?<depName>.*?)(?:\s+versioning=(?<versioning>.*?))?(?:\s+extractVersion=(?<extractVersion>.*?))?\sBUILDKIT_IMAGE=\".+:(?<currentValue>.*)\"'
+      versioningTemplate: "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
