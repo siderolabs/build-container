@@ -33,13 +33,13 @@ kind: common.Renovate
 spec:
   customManagers:
     - customType: regex
-      fileMatch:
+      managerFilePatterns:
         - ^Dockerfile$
       matchStrings:
         - '#\s+renovate:\s+datasource=(?<datasource>.*?)\s+depName=(?<depName>.*?)(?:\s+versioning=(?<versioning>.*?))?(?:\s+extractVersion=(?<extractVersion>.*?))?\sARG\s+.*?_VERSION=(?<currentValue>.*)'
       versioningTemplate: "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
     - customType: regex
-      fileMatch:
+      managerFilePatterns:
         - ^hack/scripts/setup-
       matchStrings:
         - '#\s+renovate:\s+datasource=(?<datasource>.*?)\s+depName=(?<depName>.*?)(?:\s+versioning=(?<versioning>.*?))?(?:\s+extractVersion=(?<extractVersion>.*?))?\sBUILDKIT_IMAGE=\".+:(?<currentValue>.*)\"'

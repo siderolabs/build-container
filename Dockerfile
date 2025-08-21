@@ -1,112 +1,35 @@
-ARG DOCKER=docker:27.5.1-dind
-
-FROM $DOCKER AS docker
-
-FROM alpine:3.21.3 AS build-container-drone
-
-# renovate: datasource=github-releases depName=docker/buildx
-ARG BUILDX_VERSION=v0.20.1
-# renovate: datasource=github-releases extractVersion=^v(?<version>.*)$ depName=hashicorp/terraform
-ARG TERRAFORM_VERSION=1.7.3
-
-RUN apk add --update --no-cache \
-  aws-cli \
-  bash \
-  cargo \
-  cdrkit \
-  coreutils \
-  crane \
-  curl \
-  diffoscope \
-  gcc \
-  git \
-  git-lfs \
-  gnupg \
-  ip6tables \
-  iptables \
-  jq \
-  libc6-compat \
-  libffi-dev \
-  make \
-  musl-dev \
-  openssh-client \
-  openssl-dev \
-  perl-utils \
-  py3-crcmod \
-  py3-pip \
-  python3 \
-  python3-dev \
-  qemu-img \
-  qemu-system-aarch64 \
-  qemu-system-x86_64 \
-  rust \
-  s3cmd \
-  sed \
-  socat \
-  swtpm \
-  tar \
-  yq \
-  xz \
-  zstd
-
-# workaround, install older OVMF version from Alpine 3.18
-RUN apk add --no-cache ovmf=0.0.202302-r0 --repository=https://dl-cdn.alpinelinux.org/alpine/v3.18/community
-
-# Required by docker-compose for zlib.
-ENV LD_LIBRARY_PATH=/lib:/usr/lib
-
-# Install buildx
-RUN curl --create-dirs -Lo /root/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/${BUILDX_VERSION}/buildx-${BUILDX_VERSION}.linux-amd64 \
-  && chmod 755 /root/.docker/cli-plugins/docker-buildx
-
-# Install terraform
-RUN curl -Lo /tmp/terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
-  && unzip /tmp/terraform.zip -d /usr/local/bin \
-  && chmod +x /usr/local/bin/terraform \
-  && rm /tmp/terraform.zip
-
-# Install codecov
-RUN curl -o codecov https://codecov.io/bash
-RUN curl https://raw.githubusercontent.com/codecov/codecov-bash/master/SHA512SUM | head -n 1 | shasum -a 512 -c
-RUN chmod +x codecov && mv codecov /usr/local/bin/
-
-# Install custom scripts
-ADD hack/scripts/ /usr/local/bin/
-
-COPY --from=docker /usr/local/bin/docker /usr/local/bin/dockerd /usr/local/bin/
-
 # renovate: datasource=github-releases extractVersion=^gha-runner-scale-set-(?<version>.*)$ depName=actions/actions-runner-controller
-ARG ACTIONS_RUNNER_CONTROLLER_VERSION=0.10.1
+ARG ACTIONS_RUNNER_CONTROLLER_VERSION=0.23.7
 FROM scratch AS actions-runner-controller-source
 ADD https://github.com/actions/actions-runner-controller.git#${ACTIONS_RUNNER_CONTROLLER_VERSION}:runner /
 
 # Ref: https://github.com/actions/actions-runner-controller/blob/master/runner/actions-runner-dind.ubuntu-22.04.dockerfile
-FROM ubuntu:25.04 AS build-container-ghaction
+FROM ubuntu:plucky-20250730 AS build-container-ghaction
 
 ARG TARGETPLATFORM
 # renovate: datasource=github-releases extractVersion=^v(?<version>.*)$ depName=actions/runner
-ARG RUNNER_VERSION=2.322.0
+ARG RUNNER_VERSION=2.328.0
 # renovate: datasource=github-releases extractVersion=^v(?<version>.*)$ depName=actions/runner-container-hooks
-ARG RUNNER_CONTAINER_HOOKS_VERSION=0.6.2
+ARG RUNNER_CONTAINER_HOOKS_VERSION=0.7.0
 # Docker and Docker Compose arguments
 ARG CHANNEL=stable
 # renovate: datasource=github-releases extractVersion=^v(?<version>.*)$ depName=moby/moby
-ARG DOCKER_VERSION=27.5.1
+ARG DOCKER_VERSION=28.3.3
 # renovate: datasource=github-releases depName=docker/compose
-ARG DOCKER_COMPOSE_VERSION=v2.33.0
+ARG DOCKER_COMPOSE_VERSION=v2.39.2
 # renovate: datasource=github-releases extractVersion=^v(?<version>.*)$ depName=yelp/dumb-init
 ARG DUMB_INIT_VERSION=1.2.5
 ARG RUNNER_USER_UID=1001
 ARG DOCKER_GROUP_GID=121
 
 # renovate: datasource=github-releases depName=google/go-containerregistry
-ARG CRANE_VERSION=v0.20.3
+ARG CRANE_VERSION=v0.20.6
 # renovate: datasource=github-releases depName=mikefarah/yq
-ARG YQ_VERSION=v4.45.1
+ARG YQ_VERSION=v4.47.1
 # renovate: datasource=github-releases depName=getsops/sops
-ARG SOPS_VERSION=v3.9.4
+ARG SOPS_VERSION=v3.10.2
 # renovate: datasource=github-tags depName=aws/aws-cli
-ARG AWSCLI_VERSION=2.24.5
+ARG AWSCLI_VERSION=2.28.14
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -y \

@@ -31,8 +31,7 @@ docker-%:  ## Builds the specified target defined in the Pkgfile using the docke
 
 .PHONY: build-container
 build-container:
-	@$(MAKE) docker-build-container-drone TARGET_ARGS="--push=$(PUSH)"
-	@$(MAKE) docker-build-container-ghaction TARGET_ARGS="--push=$(PUSH)" TAG="actions-runner-ubuntu-dind-25.04"
+	@$(MAKE) docker-build-container-ghaction TARGET_ARGS="--push=$(PUSH)" TAG="actions-runner-ubuntu-dind-plucky-20250730"
 
 .PHONY: rekres
 rekres:
