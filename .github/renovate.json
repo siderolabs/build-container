@@ -12,8 +12,8 @@
         {
             "customType": "regex",
             "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}",
-            "fileMatch": [
-                "^Dockerfile$"
+            "managerFilePatterns": [
+                "/^Dockerfile$/"
             ],
             "matchStrings": [
                 "#\\s+renovate:\\s+datasource=(?<datasource>.*?)\\s+depName=(?<depName>.*?)(?:\\s+versioning=(?<versioning>.*?))?(?:\\s+extractVersion=(?<extractVersion>.*?))?\\sARG\\s+.*?_VERSION=(?<currentValue>.*)"
@@ -22,8 +22,8 @@
         {
             "customType": "regex",
             "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}",
-            "fileMatch": [
-                "^hack/scripts/setup-"
+            "managerFilePatterns": [
+                "/^hack/scripts/setup-/"
             ],
             "matchStrings": [
                 "#\\s+renovate:\\s+datasource=(?<datasource>.*?)\\s+depName=(?<depName>.*?)(?:\\s+versioning=(?<versioning>.*?))?(?:\\s+extractVersion=(?<extractVersion>.*?))?\\sBUILDKIT_IMAGE=\\\".+:(?<currentValue>.*)\\\""
