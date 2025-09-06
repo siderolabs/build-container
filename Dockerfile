@@ -29,7 +29,7 @@ ARG YQ_VERSION=v4.47.1
 # renovate: datasource=github-releases depName=getsops/sops
 ARG SOPS_VERSION=v3.10.2
 # renovate: datasource=github-tags depName=aws/aws-cli
-ARG AWSCLI_VERSION=2.28.14
+ARG AWSCLI_VERSION=2.28.25
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -y \
