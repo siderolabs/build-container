@@ -1,6 +1,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED, PLEASE DO NOT EDIT.
 #
-# Generated on 2025-08-21T08:10:38Z by kres 6262116.
+# Generated on 2025-09-11T09:02:34Z by kres 953994c.
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
@@ -26,8 +26,7 @@ jobs:
       packages: write
       pull-requests: read
     runs-on:
-      - self-hosted
-      - pkgs
+      group: generic
     if: (!startsWith(github.head_ref, 'renovate/') && !startsWith(github.head_ref, 'dependabot/'))
     steps:
       - name: gather-system-info
@@ -56,7 +55,7 @@ jobs:
           done
         continue-on-error: true
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Unshallow
         run: |
           git fetch --prune --unshallow

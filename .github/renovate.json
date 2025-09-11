@@ -18,16 +18,6 @@
             "matchStrings": [
                 "#\\s+renovate:\\s+datasource=(?<datasource>.*?)\\s+depName=(?<depName>.*?)(?:\\s+versioning=(?<versioning>.*?))?(?:\\s+extractVersion=(?<extractVersion>.*?))?\\sARG\\s+.*?_VERSION=(?<currentValue>.*)"
             ]
-        },
-        {
-            "customType": "regex",
-            "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}",
-            "managerFilePatterns": [
-                "/^hack/scripts/setup-/"
-            ],
-            "matchStrings": [
-                "#\\s+renovate:\\s+datasource=(?<datasource>.*?)\\s+depName=(?<depName>.*?)(?:\\s+versioning=(?<versioning>.*?))?(?:\\s+extractVersion=(?<extractVersion>.*?))?\\sBUILDKIT_IMAGE=\\\".+:(?<currentValue>.*)\\\""
-            ]
         }
     ],
     "packageRules": [

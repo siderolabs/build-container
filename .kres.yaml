@@ -9,9 +9,7 @@ spec:
     - name: default
       buildxOptions:
         enabled: true
-      runners:
-        - self-hosted
-        - pkgs
+      runnerGroup: generic
       steps:
         - name: build
           nonMakeStep: true
@@ -37,10 +35,4 @@ spec:
         - ^Dockerfile$
       matchStrings:
         - '#\s+renovate:\s+datasource=(?<datasource>.*?)\s+depName=(?<depName>.*?)(?:\s+versioning=(?<versioning>.*?))?(?:\s+extractVersion=(?<extractVersion>.*?))?\sARG\s+.*?_VERSION=(?<currentValue>.*)'
-      versioningTemplate: "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
-    - customType: regex
-      managerFilePatterns:
-        - ^hack/scripts/setup-
-      matchStrings:
-        - '#\s+renovate:\s+datasource=(?<datasource>.*?)\s+depName=(?<depName>.*?)(?:\s+versioning=(?<versioning>.*?))?(?:\s+extractVersion=(?<extractVersion>.*?))?\sBUILDKIT_IMAGE=\".+:(?<currentValue>.*)\"'
       versioningTemplate: "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
