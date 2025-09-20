@@ -3,11 +3,11 @@ FROM ghcr.io/actions/actions-runner:2.328.0 AS actions-runner
 # renovate: datasource=github-releases depName=google/go-containerregistry
 ARG CRANE_VERSION=v0.20.6
 # renovate: datasource=github-releases depName=mikefarah/yq
-ARG YQ_VERSION=v4.47.1
+ARG YQ_VERSION=v4.47.2
 # renovate: datasource=github-releases depName=getsops/sops
 ARG SOPS_VERSION=v3.10.2
 # renovate: datasource=github-tags depName=aws/aws-cli
-ARG AWSCLI_VERSION=2.28.14
+ARG AWSCLI_VERSION=2.30.6
 
 USER root
 
