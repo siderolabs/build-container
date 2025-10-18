@@ -1,5 +1,5 @@
 # Adapted from https://github.com/actions/runner/blob/main/images/Dockerfile
-FROM ubuntu:25.10 AS build
+FROM ubuntu:questing-20251007 AS build
 
 ARG TARGETOS
 ARG TARGETARCH
@@ -36,7 +36,7 @@ RUN export RUNNER_ARCH=${TARGETARCH} \
         "https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION}/buildx-v${BUILDX_VERSION}.linux-${TARGETARCH}" \
     && chmod +x /usr/local/lib/docker/cli-plugins/docker-buildx
 
-FROM ubuntu:25.10 AS actions-runner
+FROM ubuntu:questing-20251007 AS actions-runner
 
 ARG TARGETARCH
 
@@ -47,7 +47,7 @@ ARG YQ_VERSION=v4.48.1
 # renovate: datasource=github-releases depName=getsops/sops
 ARG SOPS_VERSION=v3.11.0
 # renovate: datasource=github-tags depName=aws/aws-cli
-ARG AWSCLI_VERSION=2.31.16
+ARG AWSCLI_VERSION=2.31.18
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV RUNNER_MANUALLY_TRAP_SIG=1
