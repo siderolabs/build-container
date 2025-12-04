@@ -68,6 +68,7 @@ RUN apt update -y \
             software-properties-common \
             sudo \
             unzip \
+            virtiofsd \
             zlib1g \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
