@@ -9,8 +9,12 @@ ARG RUNNER_VERSION=2.331.0
 ARG RUNNER_CONTAINER_HOOKS_VERSION=0.7.0
 ARG DOCKER_VERSION=29.0.2
 ARG BUILDX_VERSION=0.30.1
+# renovate: datasource=github-releases depName=kubernetes/kubernetes
+ARG KUBECTL_VERSION=v1.35.0
+# renovate: datasource=github-releases depName=helm/helm
+ARG HELM_VERSION=v4.1.0
 
-RUN apt update -y && apt install curl unzip -y
+RUN apt update -y && apt install curl git unzip -y
 
 WORKDIR /actions-runner
 RUN export RUNNER_ARCH=${TARGETARCH} \
@@ -38,8 +42,22 @@ RUN export RUNNER_ARCH=${TARGETARCH} \
         "https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION}/buildx-v${BUILDX_VERSION}.linux-${TARGETARCH}" \
     && chmod +x /usr/local/lib/docker/cli-plugins/docker-buildx
 
+WORKDIR /tools
+
+RUN mkdir -p /tools/bin
+
+RUN curl -fLo kubectl https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/${TARGETARCH}/kubectl \
+    && chmod +x kubectl \
+    && mv kubectl /tools/bin/
+
+RUN curl -fLo helm.tar.gz https://get.helm.sh/helm-${HELM_VERSION}-${TARGETOS}-${TARGETARCH}.tar.gz \
+    && tar zxvf helm.tar.gz \
+    && mv ${TARGETOS}-${TARGETARCH}/helm /tools/bin/ \
+    && rm -rf helm.tar.gz linux-${TARGETARCH}
+
 FROM ubuntu:questing-20251217 AS actions-runner
 
+ARG TARGETOS
 ARG TARGETARCH
 
 # renovate: datasource=github-releases depName=google/go-containerregistry
@@ -50,6 +68,8 @@ ARG YQ_VERSION=v4.50.1
 ARG SOPS_VERSION=v3.11.0
 # renovate: datasource=github-tags depName=aws/aws-cli
 ARG AWSCLI_VERSION=2.33.4
+# renovate: datasource=github-releases depName=kubernetes-sigs/krew
+ARG KREW_VERSION=v0.4.5
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV RUNNER_MANUALLY_TRAP_SIG=1
@@ -92,6 +112,7 @@ WORKDIR /home/runner
 
 COPY --chown=runner:docker --from=build /actions-runner .
 COPY --from=build /usr/local/lib/docker/cli-plugins/docker-buildx /usr/local/lib/docker/cli-plugins/docker-buildx
+COPY --from=build /tools/bin /usr/local/bin
 
 RUN install -o root -g root -m 755 docker/* /usr/bin/ && rm -rf docker
 
@@ -129,4 +150,11 @@ RUN export AWSCLI_PLATFORM=${TARGETARCH} \
     && if [ "$AWSCLI_PLATFORM" = "arm64" ]; then AWSCLI_PLATFORM=aarch64 ; fi \
     && curl -fSL https://awscli.amazonaws.com/awscli-exe-linux-${AWSCLI_PLATFORM}-${AWSCLI_VERSION}.zip -o awscliv2.zip && unzip awscliv2.zip && ./aws/install && rm -rf awscliv2.zip aws
 
+ENV PATH="/home/runner/.krew/bin:${PATH}"
 USER runner
+
+RUN mkdir -p /tmp/krew-install && cd /tmp/krew-install \
+    && curl -fLo krew.tar.gz https://github.com/kubernetes-sigs/krew/releases/download/${KREW_VERSION}/krew-${TARGETOS}_${TARGETARCH}.tar.gz \
+    && tar zxvf krew.tar.gz \
+    && ./krew-${TARGETOS}_${TARGETARCH} install krew \
+    && rm -rf /tmp/krew-install
