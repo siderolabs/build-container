@@ -1,9 +1,11 @@
 # Adapted from https://github.com/actions/runner/blob/main/images/Dockerfile
-FROM ubuntu:25.10 AS build
+FROM ubuntu:questing-20251217 AS build
 
 ARG TARGETOS
 ARG TARGETARCH
+# renovate: datasource=github-releases depName=actions/runner
 ARG RUNNER_VERSION=2.331.0
+# update these together with RUNNER_VERSION from upstream
 ARG RUNNER_CONTAINER_HOOKS_VERSION=0.7.0
 ARG DOCKER_VERSION=29.0.2
 ARG BUILDX_VERSION=0.30.1
@@ -36,18 +38,18 @@ RUN export RUNNER_ARCH=${TARGETARCH} \
         "https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION}/buildx-v${BUILDX_VERSION}.linux-${TARGETARCH}" \
     && chmod +x /usr/local/lib/docker/cli-plugins/docker-buildx
 
-FROM ubuntu:25.10 AS actions-runner
+FROM ubuntu:questing-20251217 AS actions-runner
 
 ARG TARGETARCH
 
 # renovate: datasource=github-releases depName=google/go-containerregistry
-ARG CRANE_VERSION=v0.20.6
+ARG CRANE_VERSION=v0.20.7
 # renovate: datasource=github-releases depName=mikefarah/yq
-ARG YQ_VERSION=v4.48.1
+ARG YQ_VERSION=v4.50.1
 # renovate: datasource=github-releases depName=getsops/sops
 ARG SOPS_VERSION=v3.11.0
 # renovate: datasource=github-tags depName=aws/aws-cli
-ARG AWSCLI_VERSION=2.31.16
+ARG AWSCLI_VERSION=2.33.4
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV RUNNER_MANUALLY_TRAP_SIG=1
