@@ -123,6 +123,7 @@ RUN apt-get update -y && \
     --no-install-recommends \
     curl \
     diffoscope \
+    gettext-base \
     gh \
     iproute2 \
     iptables \
