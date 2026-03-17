@@ -8,7 +8,7 @@ ARG RUNNER_VERSION=2.332.0
 # update these together with RUNNER_VERSION from upstream
 ARG RUNNER_CONTAINER_HOOKS_VERSION=0.7.0
 ARG DOCKER_VERSION=29.3.0
-ARG BUILDX_VERSION=0.31.1
+ARG BUILDX_VERSION=0.32.1
 # renovate: datasource=github-releases depName=kubernetes/kubernetes
 ARG KUBECTL_VERSION=v1.35.0
 # renovate: datasource=github-releases depName=helm/helm
