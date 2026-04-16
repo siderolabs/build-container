@@ -4,15 +4,15 @@ FROM ubuntu:questing-20251217 AS build
 ARG TARGETOS
 ARG TARGETARCH
 # renovate: datasource=github-releases depName=actions/runner
-ARG RUNNER_VERSION=2.332.0
+ARG RUNNER_VERSION=2.333.1
 # update these together with RUNNER_VERSION from upstream
 ARG RUNNER_CONTAINER_HOOKS_VERSION=0.7.0
 ARG DOCKER_VERSION=29.3.0
 ARG BUILDX_VERSION=0.32.1
 # renovate: datasource=github-releases depName=kubernetes/kubernetes
-ARG KUBECTL_VERSION=v1.35.0
+ARG KUBECTL_VERSION=v1.35.4
 # renovate: datasource=github-releases depName=helm/helm
-ARG HELM_VERSION=v4.1.0
+ARG HELM_VERSION=v4.1.4
 
 RUN apt update -y && apt install curl git unzip -y
 
@@ -61,15 +61,15 @@ ARG TARGETOS
 ARG TARGETARCH
 
 # renovate: datasource=github-releases depName=google/go-containerregistry
-ARG CRANE_VERSION=v0.20.7
+ARG CRANE_VERSION=v0.21.5
 # renovate: datasource=github-releases depName=mikefarah/yq
-ARG YQ_VERSION=v4.50.1
+ARG YQ_VERSION=v4.52.5
 # renovate: datasource=github-releases depName=getsops/sops
-ARG SOPS_VERSION=v3.11.0
+ARG SOPS_VERSION=v3.12.2
 # renovate: datasource=github-tags depName=aws/aws-cli
-ARG AWSCLI_VERSION=2.33.4
+ARG AWSCLI_VERSION=2.34.30
 # renovate: datasource=github-releases depName=kubernetes-sigs/krew
-ARG KREW_VERSION=v0.4.5
+ARG KREW_VERSION=v0.5.0
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV RUNNER_MANUALLY_TRAP_SIG=1
