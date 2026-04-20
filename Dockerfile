@@ -1,5 +1,5 @@
 # Adapted from https://github.com/actions/runner/blob/main/images/Dockerfile
-FROM ubuntu:resolute-20260413 AS build
+FROM ubuntu:questing-20251217 AS build
 
 ARG TARGETOS
 ARG TARGETARCH
@@ -61,7 +61,7 @@ RUN curl -fLo cosign https://github.com/sigstore/cosign/releases/download/${COSI
     && chmod +x cosign \
     && mv cosign /tools/bin/
 
-FROM ubuntu:resolute-20260413 AS actions-runner
+FROM ubuntu:questing-20251217 AS actions-runner
 
 ARG TARGETOS
 ARG TARGETARCH
@@ -80,7 +80,7 @@ ARG KREW_VERSION=v0.5.0
 ENV DEBIAN_FRONTEND=noninteractive
 ENV RUNNER_MANUALLY_TRAP_SIG=1
 ENV ACTIONS_RUNNER_PRINT_LOG_TO_STDOUT=1
-ENV ImageOS=ubuntu26
+ENV ImageOS=ubuntu25
 
 # 'gpg-agent' and 'software-properties-common' are needed for the 'add-apt-repository' command that follows
 RUN apt update -y \
@@ -90,7 +90,7 @@ RUN apt update -y \
             libkrb5-3 \
             libssl3 \
             liblttng-ust1 \
-            libicu78 \
+            libicu76 \
             lsb-release \
             jq \
             software-properties-common \
