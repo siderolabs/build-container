@@ -4,7 +4,7 @@ FROM ubuntu:questing-20251217 AS build
 ARG TARGETOS
 ARG TARGETARCH
 # renovate: datasource=github-releases depName=actions/runner
-ARG RUNNER_VERSION=2.333.1
+ARG RUNNER_VERSION=2.335.1
 # update these together with RUNNER_VERSION from upstream
 ARG RUNNER_CONTAINER_HOOKS_VERSION=0.7.0
 ARG DOCKER_VERSION=29.3.1
