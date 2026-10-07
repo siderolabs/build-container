@@ -136,6 +136,7 @@ RUN apt-get update -y && \
     make \
     mkisofs \
     openssh-client \
+    osslsigncode \
     ovmf \
     qemu-system \
     qemu-utils \
