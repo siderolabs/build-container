@@ -31,7 +31,7 @@ docker-%:  ## Builds the specified target defined in the Pkgfile using the docke
 
 .PHONY: build-container
 build-container:
-	@$(MAKE) docker-actions-runner TARGET_ARGS="--push=$(PUSH)" TAG="2.337.0-25.10"
+	@$(MAKE) docker-actions-runner TARGET_ARGS="--push=$(PUSH)" TAG="2.338.0-26.04"
 
 .PHONY: rekres
 rekres:

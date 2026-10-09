@@ -1,18 +1,18 @@
 # Adapted from https://github.com/actions/runner/blob/main/images/Dockerfile
-FROM ubuntu:questing-20260610 AS build
+FROM ubuntu:resolute-20260927 AS build
 
 ARG TARGETOS
 ARG TARGETARCH
 # renovate: datasource=github-releases depName=actions/runner
-ARG RUNNER_VERSION=2.337.0
+ARG RUNNER_VERSION=2.338.0
 # update these together with RUNNER_VERSION from upstream
 ARG RUNNER_CONTAINER_HOOKS_VERSION=0.7.0
-ARG DOCKER_VERSION=29.7.2
-ARG BUILDX_VERSION=0.36.1
+ARG DOCKER_VERSION=29.8.2
+ARG BUILDX_VERSION=0.37.2
 # renovate: datasource=github-releases depName=kubernetes/kubernetes
-ARG KUBECTL_VERSION=v1.37.0
+ARG KUBECTL_VERSION=v1.37.1
 # renovate: datasource=github-releases depName=helm/helm
-ARG HELM_VERSION=v4.2.4
+ARG HELM_VERSION=v4.3.0
 # renovate: datasource=github-releases depName=sigstore/cosign
 ARG COSIGN_VERSION=v3.1.3
 
@@ -29,7 +29,7 @@ RUN curl -f -L -o runner-container-hooks.zip https://github.com/actions/runner-c
     && unzip ./runner-container-hooks.zip -d ./k8s \
     && rm runner-container-hooks.zip
 
-RUN curl -f -L -o runner-container-hooks.zip https://github.com/actions/runner-container-hooks/releases/download/v0.8.0/actions-runner-hooks-k8s-0.8.0.zip \
+RUN curl -f -L -o runner-container-hooks.zip https://github.com/actions/runner-container-hooks/releases/download/v0.8.1/actions-runner-hooks-k8s-0.8.1.zip \
     && unzip ./runner-container-hooks.zip -d ./k8s-novolume \
     && rm runner-container-hooks.zip
 
@@ -61,26 +61,26 @@ RUN curl -fLo cosign https://github.com/sigstore/cosign/releases/download/${COSI
     && chmod +x cosign \
     && mv cosign /tools/bin/
 
-FROM ubuntu:questing-20260610 AS actions-runner
+FROM ubuntu:resolute-20260927 AS actions-runner
 
 ARG TARGETOS
 ARG TARGETARCH
 
 # renovate: datasource=github-releases depName=google/go-containerregistry
-ARG CRANE_VERSION=v0.22.0
+ARG CRANE_VERSION=v0.22.1
 # renovate: datasource=github-releases depName=mikefarah/yq
-ARG YQ_VERSION=v4.53.6
+ARG YQ_VERSION=v4.54.1
 # renovate: datasource=github-releases depName=getsops/sops
 ARG SOPS_VERSION=v3.13.3
 # renovate: datasource=github-tags depName=aws/aws-cli
-ARG AWSCLI_VERSION=2.36.31
+ARG AWSCLI_VERSION=2.37.11
 # renovate: datasource=github-releases depName=kubernetes-sigs/krew
 ARG KREW_VERSION=v0.5.0
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV RUNNER_MANUALLY_TRAP_SIG=1
 ENV ACTIONS_RUNNER_PRINT_LOG_TO_STDOUT=1
-ENV ImageOS=ubuntu25
+ENV ImageOS=ubuntu26
 
 # 'gpg-agent' and 'software-properties-common' are needed for the 'add-apt-repository' command that follows
 RUN apt update -y \
@@ -88,9 +88,9 @@ RUN apt update -y \
             curl \
             gpg-agent \
             libkrb5-3 \
-            libssl3 \
+            libssl3t64 \
             liblttng-ust1 \
-            libicu76 \
+            libicu78 \
             lsb-release \
             jq \
             software-properties-common \
